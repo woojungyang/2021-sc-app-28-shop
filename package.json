@@ -1,0 +1,40 @@
+{
+  "name": "28.shop",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "cross-env NODE_ENV=development node app",
+    "serve": "cross-env NODE_ENV=development nodemon app",
+    "build": "cross-env NODE_ENV=production nodemon app",
+    "start": "cross-env NODE_ENV=production pm2 start app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/woojungyang/2021-sc-app-28-shop.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/woojungyang/2021-sc-app-28-shop/issues"
+  },
+  "homepage": "https://github.com/woojungyang/2021-sc-app-28-shop#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "cross-env": "^7.0.3",
+    "dotenv": "^10.0.0",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "fs-extra": "^10.0.0",
+    "helmet": "^4.6.0",
+    "http-errors": "^1.8.0",
+    "method-override": "^3.0.0",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.3",
+    "mysql2": "^2.3.2",
+    "rotating-file-stream": "^2.1.6",
+    "sequelize": "^6.8.0",
+    "uuid": "^8.3.2"
+  }
+}
