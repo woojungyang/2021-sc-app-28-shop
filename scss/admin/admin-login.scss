@@ -1,0 +1,33 @@
+@import '../common';
+
+.login-wrapper {
+  background: url(/img/admin/adminbg.jpg) no-repeat center;
+  background-size: cover;
+  width: 100%;
+  height: 100vh;
+  @include flex($h: center, $v: center);
+  @include flexCol;
+  .title-wrap {
+    width: 400px;
+    text-align: left;
+    font-size: 1.5em;
+    margin-bottom: 0.5em;
+    color: $white-color;
+  }
+  .login-wrap {
+    background-color: $white-color;
+    width: 400px;
+    padding: 1.5em;
+    // border: 2px solid $accent-color;
+    border-radius: 0.5em;
+    table {
+      td {
+        padding: 0.5em;
+        &.title {
+          width: 120px;
+          padding-right: 1em;
+        }
+      }
+    }
+  }
+}
