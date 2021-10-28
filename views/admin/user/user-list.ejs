@@ -1,0 +1,39 @@
+<%- include('../../inc/head.ejs') %>
+  <%- include('../../inc/header.ejs') %>
+    <section class="user-wrapper list-wrapper wrapper">
+      <table class="user-tbl table table-sm text-center border-bottom">
+        <thead>
+          <tr>
+            <th>번호</th>
+            <th>이름</th>
+            <th>아이디</th>
+            <th>이메일</th>
+            <th>전화번호</th>
+            <th>구분</th>
+            <th>관리</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td rowspan="2">1</td>
+            <td>woojungyang</td>
+            <td>
+              <a href="/admin/user/1">양우정</a>
+            </td>
+            <td>woojungyang1113@gmail.com</td>
+            <td>01094778896</td>
+            <td>일반</td>
+            <td rowspan="2">
+              <a href="" class="btn btn-success">수정</a>
+              <a href="" class="btn btn-danger">삭제</a>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="5" class="text-left">
+              [123456] 서울시 마포구 노고산동123 4층
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <%- include('../../inc/foot.ejs') %>

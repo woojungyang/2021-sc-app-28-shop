@@ -1,12 +1,21 @@
 <% if(currentPaths[1]) { %>
   <ul class="nav nav-tabs sub-navi wrapper">
     <% for (let v of links[currentPaths[1]]) { %>
-      <li class="nav-item">
-        <a class="nav-link <%=(currentPath === secondPath + '/' + v.path ? 'active' : '') %>"
-          href="<%=`${secondPath}/${v.path}`%>">
+       <li class="nav-item">
+        <a class="nav-link <%=(currentPath === (secondPath + (v.path ? '/' + v.path : '')) ? 'active' : '') %>"
+          href="<%=`${secondPath}${(v.path ? '/' + v.path : '')}`%>">
           <%=v.name%>
         </a>
       </li>
       <% } %>
   </ul>
   <% } %>
+
+
+  <!--
+    currentPaths[1] = board, user... 등이 들어감.
+    currentPaths[0] = admin, api... 이들 들어감.
+    -> let 으로 currentPath[1]으로 for 문을 돌려 원하는 네비값을 삽입.
+    * { path: '/admin/system', path2: '/admin/system', src: 'b6' },
+      -> currnetPath[0] admin / currentPath[1] = system
+   -->

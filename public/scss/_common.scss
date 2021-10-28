@@ -68,8 +68,13 @@ a:not(.btn) {
     content: '';
     height: 0.5em;
     width: 0.25em;
-    background-color: $primary-color;
+    background-color: $success-color;
     margin-right: 0.5em;
+  }
+  &.secondary {
+    &:before {
+      background-color: $success-color;
+    }
   }
 }
 // header-wrapper
@@ -104,6 +109,30 @@ a:not(.btn) {
     }
   }
   .sub-navi {
-    margin: 1.5em auto 1em auto;
+    margin: 1.5em auto 0 auto;
+  }
+}
+
+section.wrapper {
+  min-height: 70vh;
+  padding: 2em 1.5em 1.5em 1.5em;
+  border-bottom: 1px solid #dee2e6;
+  border-left: 1px solid #dee2e6;
+  border-right: 1px solid #dee2e6;
+}
+
+.nav-tabs {
+  .nav-item.show {
+    .nav-link {
+      color: $primary-color;
+      border-color: #dee2e6 #dee2e6 #fff;
+    }
+  }
+  .nav-link {
+    color: $grey-color;
+    &.active {
+      color: $success-color;
+      border-color: #dee2e6 #dee2e6 #fff;
+    }
   }
 }
