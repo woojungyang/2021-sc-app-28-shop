@@ -1,5 +1,5 @@
-<link rel="stylesheet" href="/css/board-default.css">
-<article class="board-container default-container">
+<link rel="stylesheet" href="/css/board.css">
+<article class="board-container default-type list-page">
   <table class="table text-center border-bottom">
     <thead class="list-default thead-dark ">
       <tr>
@@ -13,7 +13,9 @@
     <tbody>
       <tr>
         <td>1</td>
-        <td class="text-left">공지사항 입니다.</td>
+        <td class="text-left">
+          <a href="/admin/board/1?type=default">공지사항 입니다.</a>
+        </td>
         <td>관리자</td>
         <td>2021-10-28</td>
         <td>10</td>
@@ -21,4 +23,8 @@
     </tbody>
   </table>
   <%- // include('../inc/pager.ejs') %>
+    <div class="text-center my-4">
+    <a href="/admin/board?type=create" class="btn btn-primary">글작성</a>
+  </div>
 </article>
+<script src="/js/board/board.js"></script>

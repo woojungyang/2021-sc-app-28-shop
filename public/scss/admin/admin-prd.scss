@@ -1,1 +1,45 @@
 @import '../common';
+.prd-wrapper {
+  &.list-wrapper {
+    .btn-wrap {
+      padding: 1em 0 0.5em 0;
+      @include flex($h: space-between, $v: center);
+    }
+    table {
+      text-align: center;
+      td {
+        &:nth-child(1) {
+          width: 10%;
+        }
+        &:nth-child(2) {
+          width: 100px;
+        }
+        &:nth-child(4) {
+          width: 120px;
+        }
+        &:nth-child(5) {
+          width: 160px;
+        }
+        &:nth-child(6) {
+          width: 160px;
+        }
+        .price-sale {
+          font-size: 1.25em;
+          color: red;
+        }
+        .price-ori {
+          font-size: 1.25em;
+          color: #777;
+        }
+      }
+      td.td-icon {
+        height: 80px;
+        padding: 0.25em;
+        img {
+          max-width: 100%;
+          max-height: 100%;
+        }
+      }
+    }
+  }
+}

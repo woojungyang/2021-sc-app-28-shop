@@ -1,0 +1,8 @@
+<%- include('../../inc/head.ejs') %>
+<%- include('../../inc/header.ejs') %>
+<section class="board-wrapper view-wrapper wrapper">
+  <%- include('./inc-select.ejs') %>
+  <div class="tbl-wrap">
+    <%- include(`../../board/view-${boardType}.ejs`) %>
+  </div>
+  <%- include('../../inc/foot.ejs') %>

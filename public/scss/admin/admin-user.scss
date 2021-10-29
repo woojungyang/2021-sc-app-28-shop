@@ -2,9 +2,9 @@
 .user-wrapper {
   &.list-wrapper {
     .user-tbl {
-      th:nth-child(1),
       td:nth-child(1) {
         border-right: 1px solid #dee2e6;
+        vertical-align: middle;
       }
       th:nth-child(7),
       td:nth-child(7) {

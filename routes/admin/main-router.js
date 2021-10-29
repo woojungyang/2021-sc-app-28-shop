@@ -3,8 +3,8 @@ const express = require('express');
 const router = express.Router();
 const { error } = require('../../modules/util');
 
-router.get(['/', '/login'], (req, res, next) => {
-  res.render('admin/auth/login', { css: 'admin-login' });
+router.get('/', (req, res, next) => {
+  res.render('admin/main/main', { css: 'admin-main' });
 });
 
-module.exports = { name: '/auth', router };
+module.exports = { name: '/main', router };

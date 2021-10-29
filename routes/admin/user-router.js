@@ -10,7 +10,8 @@ router.get('/', (req, res, next) => {
 
 //회원수정화면
 router.get('/:id', (req, res, next) => {
-  res.render('admin/user/user-update', { css: 'admin-user', telNumber });
+  // type 분기
+  res.render('admin/user/user-form', { css: 'admin-user', telNumber })
 });
 
 //회원 수정

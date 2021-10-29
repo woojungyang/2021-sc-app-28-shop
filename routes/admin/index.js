@@ -10,7 +10,7 @@ fs.readdirSync(__dirname)
     router.use(name, childRouter);
   });
 router.get('/', (req, res, next) => {
-  res.render('admin/index', { css: 'admin-index' });
+  res.redirect('admin/main');
 });
 module.exports = router;
 

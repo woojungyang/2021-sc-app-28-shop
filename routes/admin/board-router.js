@@ -4,7 +4,24 @@ const router = express.Router();
 const { error } = require('../../modules/util');
 
 router.get('/', (req, res, next) => {
-  res.render('admin/board/board-list', { css: 'admin-board' });
+  const type = req.query.type
+  const boardType = req.query.boardType || 'default'
+  if (type === 'create') {
+    res.render('admin/board/board-form', { css: 'admin-board', boardType })
+  } else {
+    res.render('admin/board/board-list', { css: 'admin-board', boardType })
+  }
+});
+
+router.get('/:id', (req, res, next) => {
+  console.log("dup");
+  const type = req.query.type;
+  const boardType = req.query.boardType || 'default';
+  if (type === 'update') {
+    res.render('admin/board/board-form', { css: 'admin-board', boardType })
+  } else {
+    res.render('admin/board/board-view', { css: 'admin-board', boardType });
+  }
 });
 
 router.post('/', (req, res, next) => {
@@ -19,11 +36,8 @@ router.delete('/', (req, res, next) => {
   res.send('/admin/board:DELETE');
 });
 
-router.get('/init', (req, res, next) => {
-  res.render('admin/board/board-init', { css: 'admin-board' });
-});
-
-router.post('/init', (req, res, next) => {
-  res.send('/admin/board/init');
-});
 module.exports = { name: '/board', router };
+
+/* 
+  router는 맨 위부터 순차적으로 '/'로 들어와서, 그 뒤에 추가적인 라우터주소가있다면 넘어가는 방식
+*/

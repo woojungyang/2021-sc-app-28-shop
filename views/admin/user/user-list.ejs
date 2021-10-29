@@ -5,8 +5,8 @@
         <thead>
           <tr>
             <th>번호</th>
-            <th>이름</th>
             <th>아이디</th>
+            <th>이름</th>
             <th>이메일</th>
             <th>전화번호</th>
             <th>구분</th>
@@ -16,24 +16,23 @@
         <tbody>
           <tr>
             <td rowspan="2">1</td>
-            <td>woojungyang</td>
-            <td>
-              <a href="/admin/user/1">양우정</a>
-            </td>
+            <td><a href = "/admin/user/1">woojungyang</a></td>
+            <td>양우정</td>
             <td>woojungyang1113@gmail.com</td>
             <td>01094778896</td>
             <td>일반</td>
             <td rowspan="2">
-              <a href="" class="btn btn-success">수정</a>
+              <a href="/admin/user/1" class="btn btn-success">수정</a>
               <a href="" class="btn btn-danger">삭제</a>
             </td>
           </tr>
           <tr>
             <td colspan="5" class="text-left">
+              <b>주소: </b>
               [123456] 서울시 마포구 노고산동123 4층
             </td>
           </tr>
         </tbody>
       </table>
     </section>
-    <%- include('../../inc/foot.ejs') %>
+<%- include('../../inc/foot.ejs') %>
