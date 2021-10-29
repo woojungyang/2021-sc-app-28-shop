@@ -4,23 +4,23 @@ const router = express.Router();
 const { error } = require('../../modules/util');
 
 router.get('/', (req, res, next) => {
-  const type = req.query.type
-  const boardType = req.query.boardType || 'default'
+  const type = req.query.type;
+  const boardType = req.query.boardType || 'default';
   if (type === 'create') {
-    res.render('admin/board/board-form', { css: 'admin-board', boardType })
+    res.render('admin/board/board-form', { boardType });
   } else {
-    res.render('admin/board/board-list', { css: 'admin-board', boardType })
+    res.render('admin/board/board-list', { boardType });
   }
 });
 
 router.get('/:id', (req, res, next) => {
-  console.log("dup");
+  console.log('dup');
   const type = req.query.type;
   const boardType = req.query.boardType || 'default';
   if (type === 'update') {
-    res.render('admin/board/board-form', { css: 'admin-board', boardType })
+    res.render('admin/board/board-form', { boardType });
   } else {
-    res.render('admin/board/board-view', { css: 'admin-board', boardType });
+    res.render('admin/board/board-view', { boardType });
   }
 });
 

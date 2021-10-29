@@ -80,7 +80,7 @@ a:not(.btn) {
 // header-wrapper
 .header-wrapper {
   .header-top {
-    background-color: #f3f3f3;
+    background-color: #fafafa;
     border-top: 3px solid #575755;
     border-bottom: 1px solid $grey-color;
     @include flex($h: space-between, $v: flex-start);
