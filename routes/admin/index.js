@@ -9,6 +9,7 @@ fs.readdirSync(__dirname)
     const { name, router: childRouter } = require(path.join(__dirname, file));
     router.use(name, childRouter);
   });
+
 router.get('/', (req, res, next) => {
   res.redirect('admin/main');
 });

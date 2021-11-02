@@ -80,6 +80,55 @@ const alert = (msg, loc = '/') => {
 	</script>`;
 };
 
+const getStringTel = (t1, t2, t3) => {
+  return t1 && t2 && t3 ? t1 + '-' + t2 + '-' + t3 : '';
+};
+
+const getArrayTel = (tel) => {
+  return tel.includes('-') ? tel.split('-') : [];
+};
+
+const generateUser = (_users) => {
+  const users = _users.map((v) => {
+    v.addr1 =
+      v.addrPost && v.addrRoad
+        ? `[${v.addrPost}] 
+        ${v.addrRoad || ''} 
+        ${v.addrComment || ''}
+        ${v.addrDetail || ''}`
+        : '';
+    v.addr2 =
+      v.addrPost && v.addrJibun
+        ? `[${v.addrPost}] 
+        ${v.addrJibun}
+        ${v.addrDetail || ''}`
+        : '';
+    v.level = '';
+    switch (v.status) {
+      case '0':
+        v.level = '탈퇴회원';
+        break;
+      case '1':
+        v.level = '유휴회원';
+        break;
+      case '2':
+        v.level = '일반회원';
+        break;
+      case '8':
+        v.level = '관리자';
+        break;
+      case '9':
+        v.level = '최고관리자';
+        break;
+      default:
+        v.level = '회원';
+        break;
+    }
+    return v;
+  });
+  return users;
+};
+
 module.exports = {
   location,
   cutTail,
@@ -92,4 +141,7 @@ module.exports = {
   moveFile,
   alert,
   telNumber,
+  generateUser,
+  getArrayTel,
+  getStringTel,
 };

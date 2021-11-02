@@ -48,11 +48,11 @@ app.use(locals);
 app.use(logger);
 
 /*************** router init **************/
-const adminRouuter = require('./routes/admin');
-const apiRouuter = require('./routes/api');
+const adminRouter = require('./routes/admin');
+const apiRouter = require('./routes/api');
 
-app.use('/admin', adminRouuter);
-app.use('/api', apiRouuter);
+app.use('/admin', adminRouter);
+app.use('/api', apiRouter);
 
 /**************** error init **************/
 const _404Router = require('./routes/error/404-router');

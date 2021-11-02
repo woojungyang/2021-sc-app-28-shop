@@ -40,4 +40,7 @@ module.exports = { name: '/board', router };
 
 /* 
   router는 맨 위부터 순차적으로 '/'로 들어와서, 그 뒤에 추가적인 라우터주소가있다면 넘어가는 방식
+
+  req.query.type = ?뒤에오는 타입,
+  const boardType = req.boardType->gallery. default여부 없다면 default값 함께 전송
 */
