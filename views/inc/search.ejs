@@ -24,7 +24,7 @@
 </style>
 <div class="search-wrap">
   <form action="/<%= currents[0] %>/<%= currents[1] %>" method="GET" class="form-inline">
-    <select name="field" class="form-control mr-2">
+    <select name="field" class="form-control mr-2" onchange="this.form.submit();">
       <option value="" <%= (field === '' ? 'selected': '') %>>
         선택하세요</option>
       <% if(currents[1] === 'user' || currents[1] === 'order') { %>

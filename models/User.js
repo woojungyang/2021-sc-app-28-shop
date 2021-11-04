@@ -1,5 +1,65 @@
 const bcrypt = require('bcrypt');
-const { generateUser } = require('../modules/util');
+const { getSeparateString } = require('../modules/util');
+const generateUser = (_users) => {
+  const users = _users.map((v) => {
+    v.addr1 =
+      v.addrPost && v.addrRoad
+        ? `[${v.addrPost}] 
+        ${v.addrRoad || ''} 
+        ${v.addrComment || ''}
+        ${v.addrDetail || ''}`
+        : '';
+    v.addr2 =
+      v.addrPost && v.addrJibun
+        ? `[${v.addrPost}] 
+        ${v.addrJibun}
+        ${v.addrDetail || ''}`
+        : '';
+    v.level = '';
+    switch (v.status) {
+      case '0':
+        v.level = '탈퇴회원';
+        break;
+      case '1':
+        v.level = '유휴회원';
+        break;
+      case '2':
+        v.level = '일반회원';
+        break;
+      case '8':
+        v.level = '관리자';
+        break;
+      case '9':
+        v.level = '최고관리자';
+        break;
+      default:
+        v.level = '회원';
+        break;
+    }
+    return v;
+  });
+  return users;
+};
+const generateWhere = (sequelize, Op, { field, search }) => {
+  let where = search ? { [field]: { [Op.like]: '%' + search + '%' } } : null;
+  if (field === 'tel' && search !== '') {
+    where = sequelize.where(sequelize.fn('replace', sequelize.col('tel'), '-', ''), {
+      [Op.like]: '%' + search.replace(/-/g, '') + '%',
+    });
+  }
+  if (field === 'addrRoad' && search !== '') {
+    where = {
+      [Op.or]: {
+        addrPost: { [Op.like]: '%' + search + '%' },
+        addrRoad: { [Op.like]: '%' + search + '%' },
+        addrJibun: { [Op.like]: '%' + search + '%' },
+        addrComment: { [Op.like]: '%' + search + '%' },
+        addrDetail: { [Op.like]: '%' + search + '%' },
+      },
+    };
+  }
+  return where;
+};
 
 module.exports = (sequelize, { DataTypes, Op }) => {
   const User = sequelize.define(
@@ -23,7 +83,7 @@ module.exports = (sequelize, { DataTypes, Op }) => {
       userpw: {
         type: DataTypes.CHAR(60),
         allowNull: false,
-        /*   set(value) {
+        /* set(value) {
           const { BCRYPT_SALT: salt, BCRYPT_ROUND: rnd } = process.env;
           const hash = bcrypt.hashSync(value + salt, Number(rnd));
           this.setDataValue('userpw', hash);
@@ -36,6 +96,7 @@ module.exports = (sequelize, { DataTypes, Op }) => {
       email: {
         type: DataTypes.STRING(255),
         allowNull: false,
+        unique: true,
         validate: {
           isEmail: true,
         },
@@ -72,9 +133,15 @@ module.exports = (sequelize, { DataTypes, Op }) => {
       },
       tel: {
         type: DataTypes.STRING(14),
-        validate: {
-          len: [11, 14],
-        },
+      },
+      tel1: {
+        type: DataTypes.VIRTUAL,
+      },
+      tel2: {
+        type: DataTypes.VIRTUAL,
+      },
+      tel3: {
+        type: DataTypes.VIRTUAL,
       },
     },
     {
@@ -86,51 +153,55 @@ module.exports = (sequelize, { DataTypes, Op }) => {
   );
 
   User.associate = (models) => {
-    User.hasMany(models.Board);
+    User.hasMany(models.Board, {
+      foreignKey: {
+        name: 'user_id',
+        allowNull: false,
+      },
+      sourceKey: 'id',
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
+    });
   };
 
   User.beforeCreate(async (user) => {
     const { BCRYPT_SALT: salt, BCRYPT_ROUND: rnd } = process.env;
-    const hash = bcrypt.hashSync(user.userpw + salt, Number(rnd));
+    const hash = await bcrypt.hash(user.userpw + salt, Number(rnd));
     user.userpw = hash;
+    user.tel = getSeparateString([user.tel1, user.tel2, user.tel3], '-');
   });
+
+  User.beforeUpdate(async (user) => {
+    user.tel = getSeparateString([user.tel1, user.tel2, user.tel3], '-');
+  });
+
+  User.getCount = async function (query) {
+    return await this.count({
+      where: generateWhere(sequelize, Op, query),
+    });
+  };
+
   User.searchUser = async function (query, pager) {
-    let { field = 'id', search = '', sort = 'desc' } = query;
-    let where = search ? { [field]: { [Op.like]: '%' + search + '%' } } : null;
-    if (field === 'tel' && search !== '') {
-      where = {
-        [Op.or]: {
-          tel1: { [Op.like]: '%' + search + '%' },
-          tel2: { [Op.like]: '%' + search + '%' },
-          tel3: { [Op.like]: '%' + search + '%' },
-        },
-      };
-    }
-    if (field === 'addrRoad' && search !== '') {
-      where = {
-        [Op.or]: {
-          addrPost: { [Op.like]: '%' + search + '%' },
-          addrRoad: { [Op.like]: '%' + search + '%' },
-          addrJibun: { [Op.like]: '%' + search + '%' },
-          addrComment: { [Op.like]: '%' + search + '%' },
-          addrDetail: { [Op.like]: '%' + search + '%' },
-        },
-      };
-    }
+    let { field = 'id', sort = 'desc' } = query;
     const rs = await this.findAll({
       order: [[field || 'id', sort || 'desc']],
       offset: pager.startIdx,
       limit: pager.listCnt,
-      where,
+      where: generateWhere(sequelize, Op, query),
     });
     const users = generateUser(rs);
     return users;
   };
-
   return User;
 };
 
 /* 
-필드명이 바뀌거나, 자릿수가 바뀌었을때는 migration의 대상이지만
-validate는 대상이 아님. 
-필드명이나 단위가 바뀔 경우에는 .js 파일도수정해주고 sql에 가서 직접적으로 바꿔야함, 안그러면 자료 다날라가요 */
+  * const generateWhere = (sequelize, Op, { field, search }) => {
+  * let where = search ? { [field]: { [Op.like]: '%' + search + '%' } } : null;
+  * if (field === 'tel' && search !== '') {
+  * where = sequelize.where(
+  * sequelize.fn('replace', sequelize.col('tel'), '-', ''), ->col부분
+  / ex) SELECT COUNT(id) FROM user; = sequelize.fn('COUNT',sequelize.col('id'),3)) -> id중에서 3이 들어간걸 검색하여라
+   *{ [Op.like]: '%' + search.replace(/-/g, '') + '%' });} ->vaule부분.
+
+*/

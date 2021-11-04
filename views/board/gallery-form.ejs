@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/css/board-default.css">
+<link rel="stylesheet" href="/css/<%= currents[1] %>-<%= boardType %>.css">
 <article class="board-container default-type view-page">
   <form action="/<%= currents[0] %>/board" method="post" enctype="multipart/form-data">
     <input type="hidden" name="id" value="1">
@@ -48,5 +48,3 @@
     </div>
   </form>
 </article>
-<!--  *<input type="hidden" name="id" value="1"> ...
-:1번 글을 수정하세요라는 의미 -->

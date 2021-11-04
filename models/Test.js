@@ -1,18 +1,16 @@
 module.exports = (sequelize, DataType) => {
   const Test = sequelize.define(
-    "Test",
+    'Test',
     {
       name: {
-        type: DataType.INTEGER(10).UNSIGNED,
-        primaryKey: true,
-        autoIncrement: true,
+        type: DataType.STRING(255),
         allowNull: false,
       },
     },
     {
-      charset: "utf8",
-      collate: "utf8_general_ci",
-      tableName: "test",
+      charset: 'utf8',
+      collate: 'utf8_general_ci',
+      tableName: 'test',
       timestamps: true,
       paranoid: true,
     }
