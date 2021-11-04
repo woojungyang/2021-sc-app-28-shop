@@ -4,7 +4,7 @@ const { BoardInit } = require('../models');
 module.exports = async (req, res, next) => {
   let { boardId } = req.query;
   const boardLists = await BoardInit.findAll({
-    order: [['id', 'desc']],
+    order: [['id', 'asc']],
     // where: { id: req.query.boardId || 3 },
   });
   const [myBoard] = boardLists.filter((v, i) => {

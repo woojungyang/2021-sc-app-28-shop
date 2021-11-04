@@ -3,7 +3,6 @@ $('.binit-Update-form').submit(onInitBoard);
 
 function onInitBoard(e) {
   e.preventDefault();
-  console.log(this);
   var f = this;
   var title = f.title;
   var titleValue = title.value.trim();

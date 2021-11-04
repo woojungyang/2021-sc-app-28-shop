@@ -6,7 +6,6 @@ module.exports = (model, _listCnt = 5, _pagerCnt = 3) => {
     const totalRecord = await model.getCount(req.query);
     const pager = createPager(page, totalRecord, _listCnt, _pagerCnt);
     req.pager = pager;
-    console.log(pager);
     next();
   };
 };
