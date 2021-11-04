@@ -1,65 +1,5 @@
 const bcrypt = require('bcrypt');
 const { getSeparateString } = require('../modules/util');
-const generateUser = (_users) => {
-  const users = _users.map((v) => {
-    v.addr1 =
-      v.addrPost && v.addrRoad
-        ? `[${v.addrPost}] 
-        ${v.addrRoad || ''} 
-        ${v.addrComment || ''}
-        ${v.addrDetail || ''}`
-        : '';
-    v.addr2 =
-      v.addrPost && v.addrJibun
-        ? `[${v.addrPost}] 
-        ${v.addrJibun}
-        ${v.addrDetail || ''}`
-        : '';
-    v.level = '';
-    switch (v.status) {
-      case '0':
-        v.level = '탈퇴회원';
-        break;
-      case '1':
-        v.level = '유휴회원';
-        break;
-      case '2':
-        v.level = '일반회원';
-        break;
-      case '8':
-        v.level = '관리자';
-        break;
-      case '9':
-        v.level = '최고관리자';
-        break;
-      default:
-        v.level = '회원';
-        break;
-    }
-    return v;
-  });
-  return users;
-};
-const generateWhere = (sequelize, Op, { field, search }) => {
-  let where = search ? { [field]: { [Op.like]: '%' + search + '%' } } : null;
-  if (field === 'tel' && search !== '') {
-    where = sequelize.where(sequelize.fn('replace', sequelize.col('tel'), '-', ''), {
-      [Op.like]: '%' + search.replace(/-/g, '') + '%',
-    });
-  }
-  if (field === 'addrRoad' && search !== '') {
-    where = {
-      [Op.or]: {
-        addrPost: { [Op.like]: '%' + search + '%' },
-        addrRoad: { [Op.like]: '%' + search + '%' },
-        addrJibun: { [Op.like]: '%' + search + '%' },
-        addrComment: { [Op.like]: '%' + search + '%' },
-        addrDetail: { [Op.like]: '%' + search + '%' },
-      },
-    };
-  }
-  return where;
-};
 
 module.exports = (sequelize, { DataTypes, Op }) => {
   const User = sequelize.define(
@@ -177,31 +117,59 @@ module.exports = (sequelize, { DataTypes, Op }) => {
 
   User.getCount = async function (query) {
     return await this.count({
-      where: generateWhere(sequelize, Op, query),
+      where: sequelize.getWhere(query),
     });
   };
 
-  User.searchUser = async function (query, pager) {
+  User.searchList = async function (query, pager) {
     let { field = 'id', sort = 'desc' } = query;
     const rs = await this.findAll({
       order: [[field || 'id', sort || 'desc']],
       offset: pager.startIdx,
       limit: pager.listCnt,
-      where: generateWhere(sequelize, Op, query),
+      where: sequelize.getWhere(query),
     });
-    const users = generateUser(rs);
-    return users;
+    const lists = rs
+      .map((v) => v.toJSON())
+      .map((v) => {
+        v.addr1 =
+          v.addrPost && v.addrRoad
+            ? `[${v.addrPost}] 
+        ${v.addrRoad || ''} 
+        ${v.addrComment || ''}
+        ${v.addrDetail || ''}`
+            : '';
+        v.addr2 =
+          v.addrPost && v.addrJibun
+            ? `[${v.addrPost}] 
+        ${v.addrJibun}
+        ${v.addrDetail || ''}`
+            : '';
+        v.level = '';
+        switch (v.status) {
+          case '0':
+            v.level = '탈퇴회원';
+            break;
+          case '1':
+            v.level = '유휴회원';
+            break;
+          case '2':
+            v.level = '일반회원';
+            break;
+          case '8':
+            v.level = '관리자';
+            break;
+          case '9':
+            v.level = '최고관리자';
+            break;
+          default:
+            v.level = '회원';
+            break;
+        }
+        return v;
+      });
+    return lists;
   };
+
   return User;
 };
-
-/* 
-  * const generateWhere = (sequelize, Op, { field, search }) => {
-  * let where = search ? { [field]: { [Op.like]: '%' + search + '%' } } : null;
-  * if (field === 'tel' && search !== '') {
-  * where = sequelize.where(
-  * sequelize.fn('replace', sequelize.col('tel'), '-', ''), ->col부분
-  / ex) SELECT COUNT(id) FROM user; = sequelize.fn('COUNT',sequelize.col('id'),3)) -> id중에서 3이 들어간걸 검색하여라
-   *{ [Op.like]: '%' + search.replace(/-/g, '') + '%' });} ->vaule부분.
-
-*/

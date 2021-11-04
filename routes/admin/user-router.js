@@ -3,8 +3,7 @@ const express = require('express');
 const router = express.Router();
 const createError = require('http-errors');
 const { telNumber, alert, getSeparateArray } = require('../../modules/util');
-const { User, Sequelize } = require('../../models');
-const { Op } = Sequelize;
+const { User } = require('../../models');
 const pager = require('../../middlewares/pager-mw');
 const numeral = require('numeral');
 
@@ -20,8 +19,16 @@ router.get('/', (req, res, next) => {
 router.get('/', pager(User), async (req, res, next) => {
   try {
     let { field = 'id', search = '', sort = 'desc' } = req.query;
-    const users = await User.searchUser(req.query, req.pager);
-    const ejs = { numeral, telNumber, pager: req.pager, users, field, sort, search };
+    const users = await User.searchList(req.query, req.pager);
+    const ejs = {
+      telNumber,
+      pager: req.pager,
+      users,
+      field,
+      sort,
+      search,
+      numeral,
+    };
     res.render('admin/user/user-list', ejs);
   } catch (err) {
     next(createError(err));
@@ -43,7 +50,7 @@ router.get('/:id', async (req, res, next) => {
 // 회원 저장
 router.post('/', async (req, res, next) => {
   try {
-    await User.create(req.body);
+    const user = await User.create(req.body);
     res.send(alert('회원가입이 완료되었습니다.', '/admin/user'));
   } catch (err) {
     next(createError(err));
@@ -60,7 +67,6 @@ router.put('/', async (req, res, next) => {
     if (rs) res.send(alert('회원수정이 완료되었습니다.', '/admin/user'));
     else res.send(alert('처리되지 않았습니다', '/admin/user'));
   } catch (err) {
-    console.log(err);
     next(createError(err));
   }
 });

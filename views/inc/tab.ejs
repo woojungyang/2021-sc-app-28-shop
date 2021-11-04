@@ -1,18 +1,16 @@
-  <% if(currents[1] !=='main' ) { %>
-  <ul class="nav nav-tabs sub-navi wrapper">
-    <% for (let v of init[currents[1]]) { %>
-    <li class="nav-item">
-      <a class="nav-link 
+<% if(currents[1] !== 'main') { %>
+<ul class="nav nav-tabs sub-navi wrapper">
+  <% for (let v of init[currents[1]]) { %>
+  <li class="nav-item">
+    <a class="nav-link 
     <%=(second === v.path ? 'active' : '') %>" href="<%=`${v.path}`%>">
-        <%=v.name%>
-      </a>
-    </li>
-    <% } %>
-  </ul>
+      <%=v.name%>
+    </a>
+  </li>
   <% } %>
-
-
-  <!--
+</ul>
+<% } %>
+<!--
     currentPaths[1] = board, user... 등이 들어감.
     currentPaths[0] = admin, api... 이들 들어감.
     -> let 으로 currentPath[1]으로 for 문을 돌려 원하는 네비값을 삽입.

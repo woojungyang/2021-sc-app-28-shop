@@ -1,9 +1,11 @@
 const path = require('path');
 const fs = require('fs-extra');
+const moment = require('moment');
 
 const location = (src) => path.join(__dirname, '../', src);
 
-const cutTail = (str, len = 12) => (str.length > len ? str.substr(0, len) + ' ...' : str);
+const cutTail = (str, len = 12) =>
+  str.length > len ? str.substr(0, len) + ' ...' : str;
 
 const telNumber = [
   '010',
@@ -20,8 +22,10 @@ const telNumber = [
   '053',
   '054',
   '055',
+  '033',
   '041',
   '042',
+  '043',
   '061',
   '062',
   '063',
@@ -48,10 +52,15 @@ const zipExt = ['zip', 'alz'];
 const exts = { imgExt, mediaExt, docExt, zipExt };
 
 const relPath = (file) => `/uploads/${file.split('_')[0]}/${file}`;
-const absPath = (file) => path.join(__dirname, `../storages/${file.split('_')[0]}/${file}`);
+const absPath = (file) =>
+  path.join(__dirname, `../storages/${file.split('_')[0]}/${file}`);
 const moveFile = async (file) => {
   try {
-    let savePath = path.join(__dirname, '../storages-remove', file.split('_')[0]);
+    let savePath = path.join(
+      __dirname,
+      '../storages-remove',
+      file.split('_')[0]
+    );
     let oldPath = absPath(file);
     await fs.ensureDir(savePath); // D:\ ~ /210909
     savePath = path.join(savePath, file); // D:\ ~ /210909/210909_fjk2134-askdf2103.jpg
@@ -71,7 +80,8 @@ const getIcon = (file) => {
   return '';
 };
 
-const isImg = (file) => (imgExt.includes(path.extname(file).substr(1)) ? true : false);
+const isImg = (file) =>
+  imgExt.includes(path.extname(file).substr(1)) ? true : false;
 
 const alert = (msg, loc = '/') => {
   return `<script>
@@ -80,13 +90,39 @@ const alert = (msg, loc = '/') => {
 	</script>`;
 };
 
-const getSeprateString = (arr, division = '-') => {
+const getSeparateString = (arr, division = '-') => {
   return arr.includes('') || arr.includes(undefined) ? '' : arr.join(division);
 };
 
 const getSeparateArray = (str, division = '-') => {
   return str.includes(division) ? str.split(division) : [];
 };
+
+const dateFormat = (_date = new Date(), _type = 'D') => {
+  /* 
+  D: 2021-11-04
+  KD: 2021년 11월 4일
+  H: 2021-11-04 13:11:01
+  KH: 2021년 11월 4일 13시 11분 1초
+  */
+  let type = '';
+  switch (_type) {
+    case 'D':
+      type = 'YYYY-MM-DD';
+      break;
+    case 'H':
+      type = 'YYYY-MM-DD HH:mm:ss';
+      break;
+    case 'KD':
+      type = 'YYYY년 M월 D일';
+      break;
+    case 'KH':
+      type = 'YYYY년 M월 D일 H시 m분 s초';
+      break;
+  }
+  return moment(_date).format(type);
+};
+
 module.exports = {
   location,
   cutTail,
@@ -99,6 +135,7 @@ module.exports = {
   moveFile,
   alert,
   telNumber,
-  getSeprateString,
+  getSeparateString,
   getSeparateArray,
+  dateFormat,
 };

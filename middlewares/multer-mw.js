@@ -4,12 +4,21 @@ const path = require('path');
 const fs = require('fs-extra');
 const { v4: uuid } = require('uuid');
 const { exts } = require('../modules/util');
-const allowExt = [...exts.imgExt, ...exts.docExt, ...exts.mediaExt, ...exts.zipExt];
+const allowExt = [
+  ...exts.imgExt,
+  ...exts.docExt,
+  ...exts.mediaExt,
+  ...exts.zipExt,
+];
 const mega = 1024000;
 
 const destination = async (req, file, cb) => {
   try {
-    const folder = path.join(__dirname, '../storages', moment().format('YYMMDD'));
+    const folder = path.join(
+      __dirname,
+      '../storages',
+      moment().format('YYMMDD')
+    );
     await fs.ensureDir(folder);
     cb(null, folder);
   } catch (err) {
@@ -31,7 +40,8 @@ const fileFilter = (req, file, cb) => {
   try {
     const ext = path.extname(file.originalname).substr(1).toLowerCase();
     if (allowExt.includes(ext)) cb(null, true);
-    else cb(new Error(`첨부하신 파일은 업로드가 허용되지 않습니다 - ${ext}파일`));
+    else
+      cb(new Error(`첨부하신 파일은 업로드가 허용되지 않습니다 - ${ext}파일`));
   } catch (err) {
     cb(err);
   }

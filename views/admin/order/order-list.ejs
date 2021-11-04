@@ -2,7 +2,7 @@
 <%- include('../../inc/header.ejs') %>
 <section class="order-wrapper list-wrapper wrapper">
   <div class="btn-wrap">
-    <div>주문건수: 1,205개</div>
+    <div>주문개수: 1,205개</div>
   </div>
   <table class="table text-center border-bottom table-sm">
     <thead class="thead-dark">
@@ -23,22 +23,22 @@
         <td>
           <a href="/<%= currents[0] %>/order/1">20211029-123657</a>
         </td>
-        <td class="text-left">
+        <td>
           <a href="/<%= currents[0] %>/user?id=1">
-            woojungayng
+            booldook
           </a>
         </td>
         <td class="text-left">
           <a href="/<%= currents[0] %>/prd?id=1,2,3">맛있는 아이스크림 외1종</a>
         </td>
         <td class="text-right">
-          <div class="">20,500원</div>
+          <div class="price-sale">20,500원</div>
         </td>
         <td>
           2021-10-29 14:43:15
         </td>
         <td>
-          <select name="status" class="form-control-sm">
+          <select name="status" class="form-control form-control-sm">
             <option value="0">미주문처리</option>
             <option value="1">주문완료</option>
             <option value="2">결제완료</option>

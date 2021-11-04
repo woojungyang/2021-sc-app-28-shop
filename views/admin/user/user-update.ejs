@@ -19,11 +19,16 @@
           <td class="title require">회원등급</td>
           <td class="content">
             <select name="status" class="form-control" style="width: 200px;">
-              <option value="0" <%= user.status === '0' ? 'selected': '' %>>탈퇴회원</option>
-              <option value="1" <%= user.status === '1' ? 'selected': '' %>>유휴회원</option>
-              <option value="2" <%= user.status === '2' ? 'selected': '' %>>일반회원</option>
-              <option value="8" <%= user.status === '8' ? 'selected': '' %>>관리자</option>
-              <option value="9" <%= user.status === '9' ? 'selected': '' %>>최고관리자</option>
+              <option value="0" 
+                <%= user.status === '0' ? 'selected': '' %>>탈퇴회원</option>
+              <option value="1" 
+                <%= user.status === '1' ? 'selected': '' %>>유휴회원</option>
+              <option value="2" 
+                <%= user.status === '2' ? 'selected': '' %>>일반회원</option>
+              <option value="8" 
+                <%= user.status === '8' ? 'selected': '' %>>관리자</option>
+              <option value="9" 
+                <%= user.status === '9' ? 'selected': '' %>>최고관리자</option>
             </select>
           </td>
         </tr>
@@ -46,7 +51,8 @@
             <select name="tel1" class="form-control" style="max-width: 100px;">
               <option value="">선택</option>
               <% for(let v of telNumber) { %>
-              <option value="<%=v%>" <%= (v === user.tel[0] ? 'selected' :'')%>><%=v%></option>
+                <option value="<%=v%>" 
+                  <%= (v === user.tel[0] ? 'selected' :'')%>><%=v%></option>
               <% } %>
             </select>
             <span class="px-2">-</span>

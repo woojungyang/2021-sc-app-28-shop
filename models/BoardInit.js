@@ -1,4 +1,3 @@
-// board의 관리자.
 module.exports = (sequelize, { DataTypes, Op }) => {
   const BoardInit = sequelize.define(
     'BoardInit',

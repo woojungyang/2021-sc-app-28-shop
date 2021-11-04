@@ -1,34 +1,49 @@
 <link rel="stylesheet" href="/css/<%= currents[1] %>-<%= boardType %>.css">
 <article class="board-container default-type view-page">
-  <table class="table">
-    <tbody>
-      <tr>
-        <td class="title">제목</td>
-        <td class="content">공지사항 입니다.</td>
-      </tr>
-      <tr>
-        <td class="title">작성자</td>
-        <td class="content">관리자</td>
-      </tr>
-      <tr>
-        <td class="title">작성일</td>
-        <td class="content">2021-10-28 11:13:08</td>
-      </tr>
-      <tr>
-        <td colspan="2">
-          국가안전보장에 관련되는 대외정책·군사정책과 국내정책의 수립에 관하여 국무회의의 심의에 앞서 대통령의 자문에 응하기 위하여 국가안전보장회의를 둔다.
-          대통령은 국무총리·국무위원·행정각부의 장 기타 법률이 정하는 공사의 직을 겸할 수 없다. 국민경제자문회의의 조직·직무범위 기타 필요한 사항은 법률로 정한다.
-          선거운동은 각급 선거관리위원회의 관리하에 법률이 정하는 범위안에서 하되, 균등한 기회가 보장되어야 한다. 통신·방송의 시설기준과 신문의 기능을 보장하기 위하여 필요한 사항은 법률로 정한다.
-          형사피해자는 법률이 정하는 바에 의하여 당해 사건의 재판절차에서 진술할 수 있다. 비상계엄이 선포된 때에는 법률이 정하는 바에 의하여 영장제도, 언론·출판·집회·결사의 자유, 정부나 법원의 권한에
-          관하여 특별한 조치를 할 수 있다.
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <div class="tet-center my-4">
-    <a href="/<%= currents[0] %>/board?boardType=<%=boardType%>" class="btn btn-primary">리스트</a>
-    <a href="/<%= currents[0] %>/board/1?boardType=<%=boardType%>&type=update"
-      class="btn btn-success float-right mx-1">수정</a>
-    <a href="#" class="btn btn-danger mx-1">삭제</a>
-  </div>
+  <form action="/<%= currents[0] %>/<%= currents[1] %>" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="id" value="1">
+    <input type="hidden" name="_method" value="PUT">
+    <table class="table border-bottom">
+      <tbody>
+        <tr>
+          <td class="title" style="width: 15%;">제목</td>
+          <td class="content">
+            <input type="text" name="title" class="form-control" placeholder="제목">
+          </td>
+        </tr>
+        <tr>
+          <td class="title">작성자</td>
+          <td class="content">
+            <input type="text" name="writer" class="form-control" placeholder="작성자">
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <textarea name="content" class="form-control" placeholder="내용을 입력하세요." style="min-height: 200px;"></textarea>
+          </td>
+        </tr>
+        <tr>
+          <td>이미지 첨부</td>
+          <td>
+            <% for(let i=1; i<=10; i++) { %> 
+              <input type="file" name="img" class="form-control-file mb-2">
+            <% } %>
+          </td>
+        </tr>
+        <tr>
+          <td>파일 첨부</td>
+          <td>
+            <% for(let i=1; i<=10; i++) { %> 
+              <input type="file" name="pds" class="form-control-file mb-2">
+            <% } %>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="text-center my-4">
+      <a href="/<%= currents[0] %>/board?boardType=<%=boardType%>" class="btn btn-primary">리스트</a>
+      <button class="btn btn-success float-right mx-1">수정</button>
+      <button type="reset" class="btn btn-danger float-right mx-1">다시작성</button>
+    </div>
+  </form>
 </article>

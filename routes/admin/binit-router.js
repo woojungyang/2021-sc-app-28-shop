@@ -1,13 +1,12 @@
-const path = require('path');
 const express = require('express');
 const router = express.Router();
+const createError = require('http-errors');
 const { alert } = require('../../modules/util');
 const { BoardInit } = require('../../models');
-const createError = require('http-errors');
 
 router.get('/', async (req, res, next) => {
   try {
-    const boards = await BoardInit.findAll({ order: [['id', 'asc']] });
+    const boards = await BoardInit.findAll({ order: [['title', 'asc']] });
     res.render('admin/binit/board-init', { boards });
   } catch (err) {
     next(createError(err));
@@ -22,6 +21,7 @@ router.post('/', async (req, res, next) => {
     next(createError(err));
   }
 });
+
 router.put('/', async (req, res, next) => {
   try {
     await BoardInit.update(req.body, { where: { id: req.body.id } });
@@ -31,9 +31,9 @@ router.put('/', async (req, res, next) => {
   }
 });
 
-router.delete('/', (req, res, next) => {
+router.delete('/', async (req, res, next) => {
   try {
-    BoardInit.destroy({ where: { id: req.body.id } });
+    await BoardInit.destroy({ where: { id: req.body.id } });
     res.send(alert('게시판이 삭제되었습니다.', '/admin/binit'));
   } catch (err) {
     next(createError(err));
