@@ -1,5 +1,7 @@
 const bcrypt = require('bcrypt');
 const { getSeparateString } = require('../modules/util');
+const numeral = require('numeral');
+const createPager = require('../modules/pager-init');
 
 module.exports = (sequelize, { DataTypes, Op }) => {
   const User = sequelize.define(
@@ -121,8 +123,12 @@ module.exports = (sequelize, { DataTypes, Op }) => {
     });
   };
 
-  User.searchList = async function (query, pager) {
-    let { field = 'id', sort = 'desc' } = query;
+  User.searchList = async function (query) {
+    let { field = 'id', sort = 'desc', page = 1 } = query;
+    //pager Query
+    const totalRecord = await this.getCount(query);
+    const pager = createPager(page, totalRecord, (_listCnt = 5), (_pagerCnt = 3));
+    //find Query
     const rs = await this.findAll({
       order: [[field || 'id', sort || 'desc']],
       offset: pager.startIdx,
@@ -168,7 +174,7 @@ module.exports = (sequelize, { DataTypes, Op }) => {
         }
         return v;
       });
-    return lists;
+    return { lists, pager, totalRecord: numeral(pager.totalRecord).format() };
   };
 
   return User;
