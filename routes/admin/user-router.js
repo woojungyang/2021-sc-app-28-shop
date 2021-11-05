@@ -18,7 +18,7 @@ router.get('/', (req, res, next) => {
 router.get('/', queries(), async (req, res, next) => {
   try {
     let { field, search, sort, status } = req.query;
-    const { lists, pager, totalRecord } = await User.searchList(req.query);
+    const { lists, pager, totalRecord } = await User.getLists(req.query);
     const ejs = { telNumber, pager, lists, totalRecord };
     res.render('admin/user/user-list', ejs);
   } catch (err) {

@@ -123,7 +123,7 @@ module.exports = (sequelize, { DataTypes, Op }) => {
     });
   };
 
-  User.searchList = async function (query) {
+  User.getLists = async function (query) {
     let { field = 'id', sort = 'desc', page = 1 } = query;
     //pager Query
     const totalRecord = await this.getCount(query);

@@ -1,7 +1,6 @@
 const path = require('path');
 const express = require('express');
 const createError = require('http-errors');
-const numeral = require('numeral');
 const router = express.Router();
 const boardInit = require('../../middlewares/boardinit-mw');
 const uploader = require('../../middlewares/multer-mw');
@@ -10,7 +9,7 @@ const queries = require('../../middlewares/query-mw');
 const { Board, BoardFile, BoardInit } = require('../../models');
 
 // 신규글 작성
-router.get('/', boardInit('query'), (req, res, next) => {
+router.get('/', boardInit('query'), queries(), (req, res, next) => {
   const { type } = req.query;
   if (type === 'create') {
     res.render('admin/board/board-form', { type, binit: req.binit });
@@ -18,24 +17,35 @@ router.get('/', boardInit('query'), (req, res, next) => {
 });
 
 // 리스트
-router.get('/', queries(), boardInit('query'), async (req, res, next) => {
+router.get('/', boardInit('query'), queries(), async (req, res, next) => {
   try {
-    const { type, field, search, sort, status } = req.query;
-    const { lists, pager, totalRecord } = await Board.searchList(req.query, BoardFile, BoardInit);
-    res.render('admin/board/board-list', { type, lists, pager, totalRecord });
+    const { lists, pager, totalRecord } = await Board.getLists(req.query, BoardFile, BoardInit);
+    res.render('admin/board/board-list', { lists, pager, totalRecord });
   } catch (err) {
     next(createError(err));
   }
 });
 
-// 상세보기
-router.get('/:id', (req, res, next) => {
-  const type = req.query.type;
-  const boardType = req.query.boardType || 'default';
+// 상세수정
+router.get('/:id', queries([{ boardType: 'default' }]), (req, res, next) => {
+  const { type } = req.query;
   if (type === 'update') {
-    res.render('admin/board/board-form', { css: 'admin-board', boardType });
-  } else {
-    res.render('admin/board/board-view', { css: 'admin-board', boardType });
+  } else next();
+});
+
+// 상세보기
+router.get('/:id', boardInit('query'), queries(), async (req, res, next) => {
+  try {
+    const { type, boardType } = req.query;
+    const id = req.params.id;
+    const lists = await Board.findAll({
+      where: { id },
+      include: [{ model: BoardFile }],
+    });
+    // res.json(Board.getViewData(lists));
+    res.render('admin/board/board-view', { list: Board.getViewData(lists)[0] });
+  } catch (err) {
+    next(createError(err));
   }
 });
 

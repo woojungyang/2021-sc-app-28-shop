@@ -12,7 +12,8 @@ module.exports = (field) => {
       if (i === 0 && !boardId) boardId = v.id; // 내용이 없어도 처음입력한 게시판 게시글이 보이도록
       return v.id == boardId;
     });
-
+    req[field].boardId = boardId;
+    req[field].boardType = myBoard.boardType;
     res.locals.boardLists = _.sortBy(boardLists, 'title'); //내가 만든 게시판명 이름을 기준으로 정렬
     res.locals.boardId = boardId;
     res.locals.boardType = myBoard.boardType;
