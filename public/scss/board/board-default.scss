@@ -6,9 +6,27 @@
     .td-content {
       padding: 0.25em 0;
       > div {
-        border: 1px solid #dee2ed;
+        border: 1px solid #dee2e6;
         padding: 1em;
         min-height: 200px;
+      }
+    }
+  }
+  &.update-page {
+    .file-wrap {
+      display: flex;
+      align-items: flex-end;
+      margin-bottom: 0.5em;
+      padding-bottom: 0.5em;
+      border-bottom: 1px dotted #ccc;
+      .img {
+        width: 80px;
+        margin-right: 0.5em;
+        padding: 2px;
+        border: 1px solid #dc3545;
+      }
+      .file {
+        margin-right: 0.5em;
       }
     }
   }

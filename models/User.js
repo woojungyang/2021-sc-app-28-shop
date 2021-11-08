@@ -104,6 +104,15 @@ module.exports = (sequelize, { DataTypes, Op }) => {
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE',
     });
+    User.hasMany(models.BoardCounter, {
+      foreignKey: {
+        name: 'user_id',
+        allowNull: true,
+      },
+      sourceKey: 'id',
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
+    });
   };
 
   User.beforeCreate(async (user) => {

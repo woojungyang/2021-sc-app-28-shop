@@ -1,8 +1,11 @@
 <link rel="stylesheet" href="/css/<%= currents[1] %>-<%= boardType %>.css">
-<article class="board-container default-type view-page">
-  <form action="/<%= currents[0] %>/board" method="post" enctype="multipart/form-data">
-    <input type="hidden" name="id" value="1">
-    <input type="hidden" name="_method" value="PUT">
+<article class="board-container gallery-type update-page">
+  <form action="<%=goPath %>" method="post" enctype="multipart/form-data">
+    <% for(let v of goLists) { %>
+    <input type="hidden" name="<%= v.key %>" value="<%= v.value %>">
+    <% } %>
+    <input type="hidden" name="id" value="<%= list.id %> ">
+    <input type="hidden" name="type" value="update">
     <table class="table border-bottom">
       <tbody>
         <tr>
@@ -19,22 +22,39 @@
         </tr>
         <tr>
           <td colspan="2">
-            <textarea name="content" class="form-control" placeholder="내용을 입력하세요." style="min-height: 200px;"></textarea>
+            <textarea name="content" class="form-control" placeholder="내용을 입력하세요."
+              style="min-height: 200px;"></textarea>
           </td>
         </tr>
         <tr>
           <td>이미지 첨부</td>
           <td>
-            <% for(let i=1; i<=10; i++) { %> 
-              <input type="file" name="img" class="form-control-file mb-2">
+            <% for(let i=0; i<useImg; i++) { %>
+            <div class="file-wrap">
+              <% if(list.files[i] && list.files[i].type === 'I') { %>
+              <% let { thumbSrc, name, id, type } = list.files[i]; %>
+              <img src="<%= thumbSrc %>" alt="<%= name %>" class="img">
+              <div class="file"><%= name %></div>
+              <button type="button" class="btn btn-sm btn-danger" data-idx="<%= id %>"
+                onclick="onDeleteFile('<%= id %>', this)">삭제</button>
+              <% } %>
+            </div>
+            <input type="file" name="img" class="form-control-file mb-2">
             <% } %>
           </td>
         </tr>
         <tr>
           <td>파일 첨부</td>
           <td>
-            <% for(let i=1; i<=10; i++) { %> 
-              <input type="file" name="pds" class="form-control-file mb-2">
+            <% for(let i=0; i<useFile; i++) { %>
+            <div class="file-wrap">
+              <% if(list.files[i] && list.files[i].type === 'F') { %>
+              <% let { name, id, type } = list.files[i]; %>
+              <div class="file"><%= name %></div>
+              <button type="button" class="btn btn-sm btn-danger" onclick="onDeleteFile('<%= id %>', this)">삭제</button>
+              <% } %>
+            </div>
+            <input type="file" name="pds" class="form-control-file mb-2">
             <% } %>
           </td>
         </tr>
@@ -47,3 +67,5 @@
     </div>
   </form>
 </article>
+<script src="/js/axios.min.js"></script>
+<script src="/js/<%= currents[1] %>/<%= boardType %>-update.js"></script>

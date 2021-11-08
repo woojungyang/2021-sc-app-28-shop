@@ -5,8 +5,10 @@ const router = express.Router();
 const boardInit = require('../../middlewares/boardinit-mw');
 const uploader = require('../../middlewares/multer-mw');
 const afterUploader = require('../../middlewares/after-multer-mw');
+const counter = require('../../middlewares/board-counter-mw');
 const queries = require('../../middlewares/query-mw');
 const { Board, BoardFile, BoardInit } = require('../../models');
+const { moveFile } = require('../../modules/util');
 
 // 신규글 작성
 router.get('/', boardInit(), queries(), (req, res, next) => {
@@ -27,19 +29,23 @@ router.get('/', boardInit(), queries(), async (req, res, next) => {
 });
 
 // 상세수정
-router.get('/:id', boardInit(), queries(), (req, res, next) => {
+router.get('/:id', boardInit(), queries(), counter, async (req, res, next) => {
   const { type } = req.query;
   if (type === 'update') {
+    const lists = await Board.findAll({
+      where: { id: req.params.id },
+      include: [{ model: BoardFile }],
+    });
+    // res.json(Board.getViewData(lists)[0]);
+    res.render('admin/board/board-update', { list: Board.getViewData(lists)[0] });
   } else next();
 });
 
 // 상세보기
 router.get('/:id', boardInit(), queries(), async (req, res, next) => {
   try {
-    const { type, boardType } = req.query;
-    const id = req.params.id;
     const lists = await Board.findAll({
-      where: { id },
+      where: { id: req.params.id },
       include: [{ model: BoardFile }],
     });
     // res.json(Board.getViewData(lists));
@@ -57,24 +63,41 @@ router.post(
   boardInit('body'),
   async (req, res, next) => {
     try {
-      req.body.user_id = 1; // 회원작업 후 수정 예정
-      req.body.binit_id = res.locals.boardId;
-      const board = await Board.create(req.body);
-      req.files.forEach((file) => (file.board_id = board.id));
-      const files = await BoardFile.bulkCreate(req.files);
-      res.redirect('/admin/board?boardId=' + res.locals.boardId);
+      if (req.body.type === 'update') {
+        // const board = await Board.update(req.body, { where: { id: req.body.id } });
+        // req.files.forEach((file) => (file.board_id = board.id));
+        // const files = await BoardFile.bulkCreate(req.files);
+        // res.redirect(res.locals.goList);
+        res.json({ file: req.files, req: req.body, locals: res.locals });
+      } else {
+        req.body.user_id = 1; // 회원작업 후 수정 예정
+        req.body.binit_id = res.locals.boardId;
+        const board = await Board.create(req.body);
+        req.files.forEach((file) => (file.board_id = board.id));
+        const files = await BoardFile.bulkCreate(req.files);
+        res.redirect('/admin/board?boardId=' + res.locals.boardId);
+      }
     } catch (err) {
       next(createError(err));
     }
   }
 );
 
-router.put('/', (req, res, next) => {
-  res.send('/admin/board:PUT');
-});
-
-router.delete('/', (req, res, next) => {
-  res.send('/admin/board:DELETE');
+router.delete('/', boardInit(), queries('body'), async (req, res, next) => {
+  try {
+    await Board.destroy({ where: { id: req.body.id } });
+    const files = await BoardFile.findAll({
+      attributes: ['saveName'],
+      where: { board_id: req.body.id },
+    });
+    await BoardFile.destroy({ where: { board_id: req.body.id } });
+    for (let { saveName } of files) {
+      await moveFile(saveName);
+    }
+    res.redirect(res.locals.goList);
+  } catch (err) {
+    next(createError(err));
+  }
 });
 
 module.exports = { name: '/board', router };

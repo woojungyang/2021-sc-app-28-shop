@@ -24,6 +24,10 @@ module.exports = (sequelize, { DataTypes, Op }) => {
       content: {
         type: DataTypes.TEXT,
       },
+      readCounter: {
+        type: DataTypes.INTEGER(10).UNSIGNED,
+        defaultValue: 0,
+      },
     },
     {
       charset: 'utf8',
@@ -70,6 +74,15 @@ module.exports = (sequelize, { DataTypes, Op }) => {
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE',
     });
+    Board.hasMany(models.BoardCounter, {
+      foreignKey: {
+        name: 'board_id',
+        allowNull: false,
+      },
+      sourceKey: 'id',
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
+    });
   };
 
   Board.getCount = async function (query) {
@@ -83,8 +96,12 @@ module.exports = (sequelize, { DataTypes, Op }) => {
   Board.getViewData = function (rs, type) {
     const data = rs
       .map((v) => v.toJSON())
+      /* 
+      전달받은 JSON객체를 루프돌면서 이름으로 값을 가져오고 이름과 값을 array에 넣은 나음에 나중에 콤마로 join시켜 버린것
+      */
       .map((v) => {
         v.updatedAt = dateFormat(v.updatedAt, type === 'view' ? 'H' : 'D');
+        v.readCounter = numeral(v.readCounter).format();
         v.files = [];
         if (v.BoardFiles.length) {
           for (let file of v.BoardFiles) {

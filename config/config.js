@@ -6,6 +6,7 @@ module.exports = {
     database: process.env.DB_NAME,
     host: process.env.DB_HOST,
     dialect: process.env.DB_DIALECT,
+    timezone: '+9:00',
   },
   test: {
     username: process.env.DB_USER,
@@ -20,5 +21,6 @@ module.exports = {
     database: process.env.DB_NAME,
     host: process.env.DB_HOST,
     dialect: process.env.DB_DIALECT,
+    timezone: '+9:00',
   },
 };

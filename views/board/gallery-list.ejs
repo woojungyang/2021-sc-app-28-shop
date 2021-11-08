@@ -15,7 +15,10 @@
         style="background-image: url('<%= v.files && v.files.length ? v.files[0].thumbSrc : `https://via.placeholder.com/300?text=No+Image` %>');">
       </div>
       <div class="content-wrap">
-        <div class="title"><%= v.title %></div>
+        <div class="title">
+          <%= v.title %>
+          <small>(<%= v.readCounter %> )</small>
+        </div>
       </div>
     </li>
     <% } %>
