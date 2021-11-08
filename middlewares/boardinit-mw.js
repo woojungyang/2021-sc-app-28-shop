@@ -1,9 +1,10 @@
+//board전용
 const _ = require('lodash');
 const { BoardInit } = require('../models');
 
-module.exports = (field) => {
+module.exports = (_field = 'query') => {
   return async (req, res, next) => {
-    let { boardId } = req[field];
+    let { boardId } = req[_field];
     const boardLists = await BoardInit.findAll({
       // 전체 게시물을 정보를 가져오기
       order: [['id', 'asc']],
@@ -12,8 +13,8 @@ module.exports = (field) => {
       if (i === 0 && !boardId) boardId = v.id; // 내용이 없어도 처음입력한 게시판 게시글이 보이도록
       return v.id == boardId;
     });
-    req[field].boardId = boardId;
-    req[field].boardType = myBoard.boardType;
+    req[_field].boardId = boardId;
+    req[_field].boardType = myBoard.boardType;
     res.locals.boardLists = _.sortBy(boardLists, 'title'); //내가 만든 게시판명 이름을 기준으로 정렬
     res.locals.boardId = boardId;
     res.locals.boardType = myBoard.boardType;

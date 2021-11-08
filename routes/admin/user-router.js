@@ -74,3 +74,38 @@ router.delete('/', async (req, res, next) => {
 });
 
 module.exports = { name: '/user', router };
+
+/*  
+  * req.query
+    :각 쿼리 문자열 매개 변수에 대한 속성이포함된 개체이다.
+    ex)https://query/search?searchWord=검색내용일때, searchWord 매개변수(parameter)의검색내용이라는 값(argument)를 가져온다.
+    
+  * req.params
+    :ex)user/:name경로가 있을때 'name'속성 req.params.name으로 사용할 수있다.
+    https://params/user/1234일 경우 1234받는다. 
+    ! req.params는 더이상 사용하지않음.
+
+  * req.body
+    :JSON등의 데이터를 주로 담을때 사용
+    (주로 POST로 유저의 정보 또는 파일 업로드를 보냈을때 사용)
+
+    ex) app.js 부분
+      app.use(bodyParser.json())
+      app.use(bodyParser.urlencoded({ extends: true }))  
+		      ↓
+        	↓ // Express 4.16.0버전 부터 body-parser의 일부 기능이 익스프레스에 내장
+        	↓ // 아래와 같이 사용 가능하다
+      app.use(express.json())
+      app.use(express.urlencoded({ extends: true}))
+
+      req.body는 body-parser를 사용하기 전에는 default값으로 undefined 설정되기 때문에 body-parser를 사용하여 해결해야 오류를 뿜지않는다.
+
+      form 에서는 name: value, email: value, password: value의 값을 body에 담아 POST request를 보냄
+      form 에서 post method로 보낸 것을 req.body property(속성)으로 name, email, password를 받을 수 있다.
+
+
+
+
+
+
+*/

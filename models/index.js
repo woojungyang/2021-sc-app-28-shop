@@ -8,6 +8,7 @@ config.timezone = '+09:00';
 const db = {};
 
 Sequelize.prototype.getWhere = function ({ field, search }) {
+  // AND 'User'.'userid' LIKE %'test% 부분을 만듦(test를 검색했을시에)
   let where = search ? { [field]: { [Op.like]: '%' + search + '%' } } : {};
   if (field === 'tel' && search !== '') {
     where = this.where(this.fn('replace', this.col('tel'), '-', ''), {
@@ -47,3 +48,14 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 module.exports = db;
+
+/* 
+
+  * Sequelize.prototype.getWhere = function ({ field, search }) {
+  * [Op.and]: [{ ...sequelize.getWhere(query) }, { binit_id: query.boardId }],( models>Board.js)
+    : AND 'User'.'userid' LIKE %'test% 부분을 만듦(test를 검색했을시에)
+[Op.and] : [{}.{}] and로 엮을때 사용
+
+    :    이것은 getWhere대로 돌고 있고,  이상태에서 Board.js와 엮어줘야함.[Op.and]
+
+*/
