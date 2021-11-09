@@ -12,7 +12,7 @@
     <li class="list" data-link="<%= goPath %>/<%= v.id %>?<%= goQuery %>">
 
       <div class="img-wrap"
-        style="background-image: url('<%= v.files && v.files.length ? v.files[0].thumbSrc : `https://via.placeholder.com/300?text=No+Image` %>');">
+        style="background-image: url('<%= v.imgs.length ? v.imgs[0].thumbSrc : `https://via.placeholder.com/300?text=No+Image` %>');">
       </div>
       <div class="content-wrap">
         <div class="title">

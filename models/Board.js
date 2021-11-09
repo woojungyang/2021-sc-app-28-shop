@@ -102,19 +102,20 @@ module.exports = (sequelize, { DataTypes, Op }) => {
       .map((v) => {
         v.updatedAt = dateFormat(v.updatedAt, type === 'view' ? 'H' : 'D');
         v.readCounter = numeral(v.readCounter).format();
+        v.imgs = [];
         v.files = [];
         if (v.BoardFiles.length) {
           for (let file of v.BoardFiles) {
-            v.files.push({
+            let obj = {
               thumbSrc: relPath(file.saveName),
               name: file.oriName,
               id: file.id,
               type: file.fileType,
-            });
+            };
+            if (obj.type === 'F') v.files.push(obj);
+            else v.imgs.push(obj);
           }
-          v.files = _.sortBy(v.files, ['type']);
         }
-
         delete v.createdAt;
         delete v.deletedAt;
         delete v.BoardFiles;

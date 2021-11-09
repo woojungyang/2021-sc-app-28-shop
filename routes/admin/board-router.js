@@ -55,20 +55,21 @@ router.get('/:id', boardInit(), queries(), async (req, res, next) => {
   }
 });
 
-// 게시물 저장
+// 게시물 저장/수정
 router.post(
   '/',
   uploader.fields([{ name: 'img' }, { name: 'pds' }]),
   afterUploader(['img', 'pds']),
   boardInit('body'),
+  queries('body'),
   async (req, res, next) => {
     try {
       if (req.body.type === 'update') {
-        // const board = await Board.update(req.body, { where: { id: req.body.id } });
-        // req.files.forEach((file) => (file.board_id = board.id));
-        // const files = await BoardFile.bulkCreate(req.files);
-        // res.redirect(res.locals.goList);
-        res.json({ file: req.files, req: req.body, locals: res.locals });
+        await Board.update(req.body, { where: { id: req.body.id } });
+        req.files.forEach((file) => (file.board_id = req.body.id));
+        const files = await BoardFile.bulkCreate(req.files);
+        // res.json({ file: req.files, req: req.body, locals: res.locals });
+        res.redirect(res.locals.goList);
       } else {
         req.body.user_id = 1; // 회원작업 후 수정 예정
         req.body.binit_id = res.locals.boardId;
