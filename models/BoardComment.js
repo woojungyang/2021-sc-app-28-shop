@@ -1,3 +1,5 @@
+const { dateFormat } = require('../modules/util');
+
 module.exports = (sequelize, DataTypes) => {
   const BoardComment = sequelize.define(
     'BoardComment',
@@ -16,6 +18,12 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(255),
         allowNull: false,
       },
+      regDate: {
+        type: DataTypes.VIRTUAL,
+        get() {
+          return dateFormat(this.getDataValue('createdAt'), 'H');
+        },
+      },
     },
     {
       charset: 'utf8',
@@ -29,6 +37,15 @@ module.exports = (sequelize, DataTypes) => {
     BoardComment.belongsTo(models.Board, {
       foreignKey: {
         name: 'board_id',
+        allowNull: false,
+      },
+      sourceKey: 'id',
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
+    });
+    BoardComment.belongsTo(models.User, {
+      foreignKey: {
+        name: 'user_id',
         allowNull: false,
       },
       sourceKey: 'id',

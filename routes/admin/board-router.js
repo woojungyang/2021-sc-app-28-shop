@@ -7,7 +7,7 @@ const uploader = require('../../middlewares/multer-mw');
 const afterUploader = require('../../middlewares/after-multer-mw');
 const counter = require('../../middlewares/board-counter-mw');
 const queries = require('../../middlewares/query-mw');
-const { Board, BoardFile, BoardInit } = require('../../models');
+const { Board, BoardFile, BoardComment } = require('../../models');
 const { moveFile } = require('../../modules/util');
 
 // 신규글 작성
@@ -44,16 +44,18 @@ router.get('/:id', boardInit(), queries(), counter, async (req, res, next) => {
 // 상세보기
 router.get('/:id', boardInit(), queries(), async (req, res, next) => {
   try {
-    const lists = await Board.findAll({
-      where: { id: req.params.id },
-      include: [{ model: BoardFile }],
+    const { lists, pager } = await Board.getList(
+      req.params.id,
+      req.query,
+      BoardFile,
+      BoardComment
+    );
+    // res.json({ list: Board.getViewData(lists)[0], pager });
+    res.render('admin/board/board-view', {
+      list: Board.getViewData(lists)[0],
+      pager,
     });
-    // res.json(Board.getViewData(lists));
-    res.render('admin/board/board-view', { list: Board.getViewData(lists)[0] });
-  } catch (err) {
-    next(createError(err));
-  }
-});
+
 
 // 게시물 저장/수정
 router.post(
@@ -71,7 +73,7 @@ router.post(
         // res.json({ file: req.files, req: req.body, locals: res.locals });
         res.redirect(res.locals.goList);
       } else {
-        req.body.user_id = req.user.id; // 회원작업 후 수정 예정
+        req.body.user_id = req.user.id;
         req.body.binit_id = res.locals.boardId;
         const board = await Board.create(req.body);
         req.files.forEach((file) => (file.board_id = board.id));

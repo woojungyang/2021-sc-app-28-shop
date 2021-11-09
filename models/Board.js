@@ -124,6 +124,27 @@ module.exports = (sequelize, { DataTypes, Op }) => {
     return data;
   };
 
+  Board.getList = async function (id, query, BoardFile, BoardComment) {
+    let { page2 } = query;
+    let listCnt = 10;
+    let pagerCnt = 5;
+    const totalRecord = await BoardComment.count({ where: { board_id: id } });
+    const pager = createPager(page2 || 1, totalRecord, listCnt, pagerCnt);
+    const lists = await this.findAll({
+      where: { id },
+      include: [
+        { model: BoardFile },
+        {
+          model: BoardComment,
+          order: [['id', 'desc']],
+          offset: pager.startIdx,
+          limit: listCnt,
+        },
+      ],
+    });
+    return { lists, pager };
+  };
+
   Board.getLists = async function (query, BoardFile) {
     let { field, sort, boardId, page, boardType } = query;
     let listCnt = boardType === 'gallery' ? 12 : 5;
