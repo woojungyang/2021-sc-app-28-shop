@@ -13,12 +13,12 @@ const local = require('./local-strategy');
 const { User } = require('../models');
 
 const serialize = (user, done) => {
-  done(null, user.idx);
+  done(null, user.id);
 };
 
 const deserialize = async (id, done) => {
   try {
-    const { success, user } = await User.findOne({ where: { id } });
+    const user = await User.findOne({ where: { id } });
     if (user) done(null, user);
     else done(null, false, '사용자 정보가 없습니다.');
   } catch (err) {
@@ -27,7 +27,7 @@ const deserialize = async (id, done) => {
 };
 
 module.exports = (passport) => {
-  passport.serializeUser(serialize); // req.user -> idx (cookie -> session)
-  passport.deserializeUser(deserialize); // req.user <- DB user 정보 (session)
+  passport.serializeUser(serialize);
+  passport.deserializeUser(deserialize);
   local(passport);
 };

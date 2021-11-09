@@ -10,10 +10,11 @@ const method = require('./middlewares/method-mw');
 const logger = require('./middlewares/morgan-mw');
 const session = require('./middlewares/session-mw');
 const locals = require('./middlewares/locals-mw');
+const { isAdmin } = require('./middlewares/auth-mw');
 const { sequelize } = require('./models');
 
 /*************** sequelize init **************/
-require('./modules/sequelize-init')(sequelize);
+require('./modules/sequelize-init')(sequelize, true);
 
 /*************** server init **************/
 require('./modules/server-init')(app, process.env.PORT);
@@ -51,7 +52,7 @@ app.use(logger);
 const adminRouter = require('./routes/admin');
 const apiRouter = require('./routes/api');
 
-app.use('/admin', adminRouter);
+app.use('/admin', isAdmin(7), adminRouter);
 app.use('/api', apiRouter);
 
 /**************** error init **************/

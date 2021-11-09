@@ -126,13 +126,13 @@ module.exports = (sequelize, { DataTypes, Op }) => {
     user.tel = getSeparateString([user.tel1, user.tel2, user.tel3], '-');
   });
 
-  User.loginUser = async function () {
-    const { BCRYPT_SALT: salt, BCRYPT_ROUND: rnd } = process.env;
+  User.loginUser = async function (userid, userpw) {
+    const { BCRYPT_SALT: salt } = process.env;
     const user = await this.findOne({ where: { userid } });
     if (user && user.userpw) {
       const success = await bcrypt.compare(userpw + salt, user.userpw);
       return success ? user : null;
-    }
+    } else return null;
   };
 
   User.getCount = async function (query) {
@@ -179,6 +179,9 @@ module.exports = (sequelize, { DataTypes, Op }) => {
             break;
           case '2':
             v.level = '일반회원';
+            break;
+          case '7':
+            v.level = '중간관리자';
             break;
           case '8':
             v.level = '관리자';

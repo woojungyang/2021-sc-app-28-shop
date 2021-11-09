@@ -1,0 +1,45 @@
+@import '../variables';
+@import '../mixins';
+
+.comment-wrapper {
+  margin: 1.5em 0;
+  padding: 1.5em 0;
+  border-top: 4px double $grey-color;
+  .comment-create {
+    @include flex;
+    input[name='writer'] {
+      width: 150px;
+      margin-right: 0.5em;
+    }
+    input[name='comment'] {
+      margin-right: 0.5em;
+    }
+    button {
+      flex-shrink: 0;
+    }
+  }
+  .comment-wrap {
+    margin: 1em 0;
+    border-top: 1px solid #ccc;
+    .comment-list {
+      padding: 0.5em;
+      border-bottom: 1px solid #ccc;
+      @include flex($h: space-between, $v: flex-start);
+      .content {
+        .writer {
+          font-weight: bold;
+          margin-bottom: 0.25em;
+        }
+        .comment {
+          padding-left: 0.5em;
+        }
+      }
+      .date {
+        width: 140px;
+        font-size: 0.875em;
+        color: #aaa;
+        text-align: right;
+      }
+    }
+  }
+}

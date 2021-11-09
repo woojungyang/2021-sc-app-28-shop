@@ -21,7 +21,7 @@ router.get('/', boardInit(), queries(), (req, res, next) => {
 // 리스트
 router.get('/', boardInit(), queries(), async (req, res, next) => {
   try {
-    const { lists, pager, totalRecord } = await Board.getLists(req.query, BoardFile, BoardInit);
+    const { lists, pager, totalRecord } = await Board.getLists(req.query, BoardFile);
     res.render('admin/board/board-list', { lists, pager, totalRecord });
   } catch (err) {
     next(createError(err));
@@ -71,7 +71,7 @@ router.post(
         // res.json({ file: req.files, req: req.body, locals: res.locals });
         res.redirect(res.locals.goList);
       } else {
-        req.body.user_id = 1; // 회원작업 후 수정 예정
+        req.body.user_id = req.user.id; // 회원작업 후 수정 예정
         req.body.binit_id = res.locals.boardId;
         const board = await Board.create(req.body);
         req.files.forEach((file) => (file.board_id = board.id));
