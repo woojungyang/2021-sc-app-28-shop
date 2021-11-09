@@ -4,8 +4,8 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const helmet = require('helmet');
-// const passport = require('passport');
-// const passportModule = require('./passport');
+const passport = require('passport');
+const passportModule = require('./passport');
 const method = require('./middlewares/method-mw');
 const logger = require('./middlewares/morgan-mw');
 const session = require('./middlewares/session-mw');
@@ -37,9 +37,9 @@ app.use(method());
 app.use(session(app));
 
 /**************** passport ****************/
-// passportModule(passport);
-// app.use(passport.initialize());
-// app.use(passport.session());
+passportModule(passport);
+app.use(passport.initialize());
+app.use(passport.session());
 
 /***************** locals *****************/
 app.use(locals);

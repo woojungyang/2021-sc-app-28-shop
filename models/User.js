@@ -126,6 +126,15 @@ module.exports = (sequelize, { DataTypes, Op }) => {
     user.tel = getSeparateString([user.tel1, user.tel2, user.tel3], '-');
   });
 
+  User.loginUser = async function () {
+    const { BCRYPT_SALT: salt, BCRYPT_ROUND: rnd } = process.env;
+    const user = await this.findOne({ where: { userid } });
+    if (user && user.userpw) {
+      const success = await bcrypt.compare(userpw + salt, user.userpw);
+      return success ? user : null;
+    }
+  };
+
   User.getCount = async function (query) {
     return await this.count({
       where: sequelize.getWhere(query),
@@ -188,3 +197,9 @@ module.exports = (sequelize, { DataTypes, Op }) => {
 
   return User;
 };
+
+/* 
+ * Sequelise findOnde
+  :만약에 못찾게 되면 return null -> false 판정
+
+*/
