@@ -1,6 +1,14 @@
 <%- include('../../inc/head.ejs') %>
 <%- include('../../inc/header.ejs') %>
+<link rel="stylesheet" href="/css/jstree/style.min.css">
 <section class="cate-wrapper wrapper">
-  카테고리 관리
+  <div class="cate-wrap">
+    <div id="jstreeWrap"></div>
+  </div>
+  <div class="cate-form">
+
+  </div>
 </section>
+<script src="/js/jstree.min.js"></script>
+<script src="/js/<%= currents[1] %>/cate.js"></script>
 <%- include('../../inc/foot.ejs') %>
