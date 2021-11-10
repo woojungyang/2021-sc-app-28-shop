@@ -44,18 +44,16 @@ router.get('/:id', boardInit(), queries(), counter, async (req, res, next) => {
 // 상세보기
 router.get('/:id', boardInit(), queries(), async (req, res, next) => {
   try {
-    const { lists, pager } = await Board.getList(
-      req.params.id,
-      req.query,
-      BoardFile,
-      BoardComment
-    );
+    const { lists, pager } = await Board.getList(req.params.id, req.query, BoardFile, BoardComment);
     // res.json({ list: Board.getViewData(lists)[0], pager });
     res.render('admin/board/board-view', {
       list: Board.getViewData(lists)[0],
       pager,
     });
-
+  } catch (err) {
+    next(createError(err));
+  }
+});
 
 // 게시물 저장/수정
 router.post(
@@ -93,7 +91,12 @@ router.delete('/', boardInit(), queries('body'), async (req, res, next) => {
       attributes: ['saveName'],
       where: { board_id: req.body.id },
     });
-    await BoardFile.destroy({ where: { board_id: req.body.id } });
+    await BoardFile.destroy({
+      where: { board_id: req.body.id },
+    });
+    await BoardComment.destroy({
+      where: { board_id: req.body.id },
+    });
     for (let { saveName } of files) {
       await moveFile(saveName);
     }

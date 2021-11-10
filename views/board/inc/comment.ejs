@@ -5,9 +5,8 @@
     <% } %>
     <input type="hidden" name="board_id" value="<%= list.id %>">
     <input type="hidden" name="user_id" value="<%= user.id %>">
-    <input type="hidden" name="page2" value="<%= pager.page %>">
     <div class="comment-create">
-      <input type="text" name="writer" class="form-control" placeholder="이름" value="<%=user.username%>">
+      <input type="text" name="writer" class="form-control" placeholder="이름" value="<%= user.username %>">
       <input type="text" name="comment" class="form-control" placeholder="한줄 코멘트">
       <button class="btn btn-primary">등록</button>
     </div>
@@ -20,6 +19,15 @@
         <p class="comment"><%= v.comment %></p>
       </div>
       <span class="date"><%= v.regDate %></span>
+      <button class="btn btn-danger btn-sm bt-delete">삭제</button>
+      <form action="/<%= currents[0] %>/comment" method="POST" name="deleteCommentForm">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="hidden" name="id" value="<%= v.id %>">
+        <input type="hidden" name="board_id" value="<%= list.id %>">
+        <% for(let v of goLists) { %>
+        <input type="hidden" name="<%= v.key %>" value="<%= v.value %>">
+        <% } %>
+      </form>
     </li>
     <% } %>
   </ul>
@@ -42,5 +50,15 @@
       return false;
     }
     this.submit();
+  }
+
+  $('.bt-delete').click(onDeleteComment);
+
+  function onDeleteComment() {
+    var f = $(this).next()[0];
+    if (confirm('댓글을 삭제하시겠습니까?')) {
+      f.submit();
+    }
+
   }
 </script>

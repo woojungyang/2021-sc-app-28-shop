@@ -18,6 +18,7 @@ module.exports = (req, res, next) => {
   res.locals.second += res.locals.currents[1] ? '/' + res.locals.currents[1] : '';
   next();
 };
+
 /* 
 path:{
   current:현재경로
