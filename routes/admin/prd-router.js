@@ -1,30 +1,54 @@
-const path = require('path')
-const express = require('express')
-const router = express.Router()
-const { error } = require('../../modules/util')
+const path = require('path');
+const express = require('express');
+const router = express.Router();
+const createError = require('http-errors');
+const { error } = require('../../modules/util');
 
 router.get('/', (req, res, next) => {
   if (req.query.type === 'create') {
-    res.render('admin/prd/prd-form', { css: 'admin-prd', type: req.query.type })
-  } else {
-    res.render('admin/prd/prd-list', { css: 'admin-prd' })
+    res.render('admin/prd/prd-form');
+  } else next();
+});
+
+router.get('/', async (req, res, next) => {
+  try {
+    res.render('admin/prd/prd-list');
+  } catch (err) {
+    next(createError(err));
   }
-})
+});
 
-router.get('/:id', (req, res, next) => {
-  res.render('admin/prd/prd-form', { css: 'admin-prd', type: 'update' })
-})
+router.get('/:id', async (req, res, next) => {
+  try {
+    res.render('admin/prd/prd-form');
+  } catch (err) {
+    next(createError(err));
+  }
+});
 
-router.post('/', (req, res, next) => {
-  res.send('/admin/prd:POST')
-})
+router.post('/', async (req, res, next) => {
+  try {
+    res.json(req.body);
+    // res.redirect('/admin/prd');
+  } catch (err) {
+    next(createError(err));
+  }
+});
 
-router.put('/', (req, res, next) => {
-  res.send('/admin/prd:PUT')
-})
+router.put('/', async (req, res, next) => {
+  try {
+    res.redirect('/admin/prd');
+  } catch (err) {
+    next(createError(err));
+  }
+});
 
-router.delete('/', (req, res, next) => {
-  res.send('/admin/prd:DELETE')
-})
+router.delete('/', async (req, res, next) => {
+  try {
+    res.redirect('/admin/prd');
+  } catch (err) {
+    next(createError(err));
+  }
+});
 
-module.exports = { name: '/prd', router }
+module.exports = { name: '/prd', router };
