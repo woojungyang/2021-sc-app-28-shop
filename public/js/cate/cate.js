@@ -1,10 +1,18 @@
 var core = {};
-var plugins = ['contextmenu', 'dnd', 'state', 'wholerow', 'changed'];
+var plugins = ['contextmenu', 'dnd', 'search', 'state', 'wholerow', 'changed', 'types'];
+
+var types = {
+  default: {
+    max_depth: 2,
+  },
+};
 
 core.themes = {
-  variant: true,
+  variant: 'large',
   striped: true,
 };
+
+core.check_callback = true;
 
 core.data = {
   url: function (node) {
@@ -16,8 +24,41 @@ core.data = {
 };
 
 function onChangedTree(e, data) {
-  console.log(data.changed.selected); // newly selected
-  console.log(data.changed.deselected); // newly deselected
+  console.log(data.node.id);
 }
 
-$('#jstreeWrap').jstree({ core: core, plugins: plugins }).on('changed.jstree', onChangedTree);
+function onCreateTree(e, data) {
+  axios
+    .post('/api/tree', { id: data.node.id })
+    .then(onUpdateTree)
+    .catch(function (err) {
+      console.log(err);
+    });
+}
+
+function onDeleteTree(e, data) {
+  axios
+    .delete('/api/tree', { data: { id: data.node.id } })
+    .then(onUpdateTree)
+    .catch(function (err) {
+      console.log(err);
+    });
+}
+
+function onUpdateTree() {
+  axios
+    .put('/api/tree', { node: $('#jstreeWrap').jstree(true).get_json('#') })
+    .then(function (r) {
+      $('#jstreeWrap').jstree().refresh();
+    })
+    .catch(function (err) {
+      console.log(err);
+    });
+}
+
+$('#jstreeWrap')
+  .jstree({ core: core, plugins: plugins, types })
+  .on('create_node.jstree', onCreateTree)
+  .on('rename_node.jstree', onUpdateTree)
+  .on('move_node.jstree', onUpdateTree)
+  .on('delete_node.jstree', onDeleteTree);
