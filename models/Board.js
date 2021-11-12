@@ -88,7 +88,7 @@ module.exports = (sequelize, { DataTypes, Op }) => {
   Board.getCount = async function (query) {
     return await this.count({
       where: {
-        [Op.and]: [{ ...sequelize.getWhere(query) }, { binit_id: query.boardId }],
+        [Op.and]: [sequelize.getWhere(query), { binit_id: query.boardId }],
       },
     });
   };
@@ -104,7 +104,7 @@ module.exports = (sequelize, { DataTypes, Op }) => {
         if (v.BoardFiles.length) {
           for (let file of v.BoardFiles) {
             let obj = {
-              thumbSrc: relPath(file.saveName),
+              thumbSrc: file.fileType === 'I' ? relPath(file.saveName) : null,
               name: file.oriName,
               id: file.id,
               type: file.fileType,
@@ -154,7 +154,7 @@ module.exports = (sequelize, { DataTypes, Op }) => {
       offset: pager.startIdx,
       limit: pager.listCnt,
       where: {
-        [Op.and]: [{ ...sequelize.getWhere(query) }, { binit_id: boardId }],
+        [Op.and]: [sequelize.getWhere(query), { binit_id: boardId }],
       },
       include: [{ model: BoardFile, attributes: ['saveName'] }],
     });

@@ -1,14 +1,8 @@
-//JSTREE
+// jsTree
 var allData = null;
 var selData = [];
 var core = {};
 var plugins = ['wholerow', 'changed', 'checkbox'];
-
-var types = {
-  default: {
-    max_depth: 2,
-  },
-};
 
 core.themes = {
   variant: 'large',
@@ -31,35 +25,46 @@ $('#jstreeWrap')
   .on('changed.jstree', onChangeTree)
   .on('loaded.jstree', onLoadedTree);
 
-function onChangeTree(e, data) {
-  var allData = $('#jstreeWrap').jstree()._model.data;
-  const selectedTree = [];
-  for (var v of data.selected) {
-    if (!allData[v].children.length) selectedTree.push(v);
-  }
-  selData = selectedTree;
-}
-
 function onLoadedTree(e, data) {
   allData = data.instance._model.data;
+  // $('#jstreeWrap').jstree('check_node', 'j1_11');
+}
+
+function onChangeTree(e, data) {
+  const selectedTree = [];
+  for (var v of data.selected) {
+    if (!allData[v].children.length) {
+      selectedTree.push(v);
+    }
+  }
+  selData = selectedTree;
 }
 
 $('.prd-wrapper .bt-modal-close').click(onCloseModal);
 function onCloseModal() {
   $('.prd-wrapper .modal-wrapper').hide();
   var html = '';
+  var title = '';
+  var cate = [];
   for (var v of selData) {
-    html += '<div class="data">' + allData[v].text + '</div>';
+    cate.push(v);
+    title = '';
+    for (let i = 0; i < allData[v].parents.length - 2; i++) {
+      title += allData[allData[v].parents[i]].text + '/';
+    }
+    title += allData[v].text;
+    html += '<div class="tree-data">' + title + '</div>';
+    $('.prd-wrapper form[name="prdCreateForm"] input[name="cate"]').val(cate.join(','));
   }
   $('.prd-wrapper .selected-tree').html(html);
 }
 
-$('.form-wrapper .bt-cate').click(onClickCate);
+$('.prd-wrapper .bt-cate').click(onClickCate);
 function onClickCate() {
   $('.prd-wrapper .modal-wrapper').show();
 }
 
-/************************ Quill *******************************/
+/******************** quill ********************/
 var toolbarOptions = [
   ['bold', 'italic', 'underline', 'strike'], // toggled buttons
   ['blockquote', 'code-block'],
@@ -86,6 +91,9 @@ var quill = new Quill('#editor', {
   },
   theme: 'snow',
 });
+
+// const delta = quill.clipboard.convert(html);
+// quill.setContents(delta);
 
 $('form[name="prdCreateForm"]').submit(onSubmitPrdCreateForm);
 function onSubmitPrdCreateForm(e) {
