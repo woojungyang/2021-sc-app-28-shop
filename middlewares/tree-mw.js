@@ -12,3 +12,8 @@ module.exports = (file = '../json/tree.json') => {
     }
   };
 };
+
+/* 
+file을 읽어드리기 위해서 fs-extra를 사용할 수밖에 없음
+
+*/
