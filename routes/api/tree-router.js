@@ -4,7 +4,7 @@ const express = require('express');
 const { Cate } = require('../../models');
 const tree = require('../../middlewares/tree-mw');
 const { Op } = require('sequelize');
-const { findChildId, findObj } = require('../../modules/util');
+const { findAlldId, findObj, findAllId } = require('../../modules/util');
 const router = express.Router();
 
 router.get('/', async (req, res, next) => {
@@ -18,7 +18,10 @@ router.get('/', async (req, res, next) => {
 
 router.put('/', async (req, res, next) => {
   try {
-    const tree = await fs.writeJSON(path.join(__dirname, '../../json/tree.json'), req.body.node);
+    const tree = await fs.writeJSON(
+      path.join(__dirname, '../../json/tree.json'),
+      req.body.node
+    );
     res.status(200).json({ success: true });
   } catch (err) {
     res.status(500).json(err);
@@ -36,7 +39,7 @@ router.post('/', async (req, res, next) => {
 
 router.delete('/', tree(), async (req, res, next) => {
   try {
-    const treeArray = findChildId(findObj(req.tree, req.body.id), []);
+    const treeArray = findAllId(findObj(req.tree, req.body.id), []);
     await Cate.destroy({ where: { id: { [Op.or]: treeArray } } });
     res.status(200).json({ success: true });
   } catch (err) {

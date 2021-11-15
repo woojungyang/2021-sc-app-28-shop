@@ -6,10 +6,10 @@ module.exports = {
     const insertUsers = [];
     insertUsers.push({
       userid: 'woojungyang',
-      userpw: await bcrypt.hash('123456' + salt, Number(round)),
-      username: '최고관리자',
-      email: 'blossom1113@nate.com',
-      tel: `010-9477-8896`,
+      userpw: await bcrypt.hash('111111' + salt, Number(round)),
+      username: '우정양',
+      email: 'woojungyang1113@gmail.com',
+      tel: '010-9477-8896',
       addrPost: '12345',
       addrRoad: '서울시 마포구 노고산로',
       addrJibun: '서울시 마포구 창천동',

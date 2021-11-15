@@ -113,6 +113,11 @@ module.exports = (sequelize, { DataTypes, Op }) => {
             else v.imgs.push(obj);
           }
         }
+        if (!v.imgs.length) {
+          v.imgs[0] = {
+            thumbSrc: 'https://via.placeholder.com/300?text=No+Image',
+          };
+        }
         delete v.createdAt;
         delete v.deletedAt;
         delete v.BoardFiles;
@@ -156,7 +161,7 @@ module.exports = (sequelize, { DataTypes, Op }) => {
       where: {
         [Op.and]: [sequelize.getWhere(query), { binit_id: boardId }],
       },
-      include: [{ model: BoardFile, attributes: ['saveName'] }],
+      include: [{ model: BoardFile, attributes: ['saveName', 'fileType'] }],
     });
     const lists = this.getViewData(rs);
 

@@ -24,7 +24,6 @@ module.exports = (sequelize, { DataTypes, Op }) => {
     Cate.belongsToMany(models.Product, {
       foreignKey: {
         name: 'cate_id',
-        allowNull: false,
       },
       through: 'cate_product',
       onUpdate: 'CASCADE',

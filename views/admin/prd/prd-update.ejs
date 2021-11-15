@@ -2,12 +2,15 @@
 <%- include('../../inc/header.ejs') %>
 <link rel="stylesheet" href="/css/quill.snow.css">
 <link rel="stylesheet" href="/css/jstree/style.min.css">
-<section class="prd-wrapper wrapper form-wrapper">
+<section class="prd-wrapper wrapper update-wrapper">
   <h4 class="title bullet my-2">상품 수정</h4>
-  <form action="<%= goPath %>" method="POST" name="prdCreateForm" enctype="multipart/form-data">
+  <form action="<%= goPath %>" method="POST"  name="prdCreateForm" enctype="multipart/form-data">
     <input type="hidden" name="cate">
     <input type="hidden" name="type" value="update">
-    <input type="hidden" name="id" value="<%=prd.id%>">
+    <input type="hidden" name="id" value="<%= prd.id %>">
+    <% for(let v of goLists) { %>
+      <input type="hidden" name="<%= v.key %>" value="<%= v.value %>">
+    <% } %>
     <table class="table border-bottom">
       <tbody>
         <tr>
@@ -26,7 +29,7 @@
             <span class="red">*</span>
           </td>
           <td class="content">
-            <input type="text" name="title" class="form-control" placeholder="상품명" value="<%=prd.title%>">
+            <input type="text" name="title" class="form-control" placeholder="상품명" value="<%= prd.title %>">
           </td>
         </tr>
         <tr>
@@ -36,24 +39,22 @@
           </td>
           <td class="content">
             <select name="status" class="form-control small">
-              <option value="0" value="<%=prd.status =='0' ? ' selected : ''%>">판매중지</option>
-              <option value="1" value="<%=prd.status =='1' ? ' selected : ''%>">일시판매중지</option>
-              <option value="2" value="<%=prd.status =='2' ? ' selected : ''%>" selected>판매중</option>
+              <option value="0" value="<%= prd.status == '0' ? 'selected': '' %>">판매중지</option>
+              <option value="1" value="<%= prd.status == '1' ? 'selected': '' %>">일시판매중지</option>
+              <option value="2" value="<%= prd.status == '2' ? 'selected': '' %>">판매중</option>
             </select>
           </td>
         </tr>
         <tr>
           <td class="title">소비자가격</td>
           <td class="content">
-            <input type="number" name="priceOrigin" class="form-control small" placeholder="소비자가격"
-              value="<%=prd.priceOrigin%>">
+            <input type="number" name="priceOrigin" class="form-control small" placeholder="소비자가격" value="<%= prd.priceOrigin %>">
           </td>
         </tr>
         <tr>
           <td class="title">판매가격</td>
           <td class="content">
-            <input type="number" name="priceSale" class="form-control small" placeholder="판매가격"
-              value="<%=prd.priceSale%>">
+            <input type="number" name="priceSale" class="form-control small" placeholder="판매가격" value="<%= prd.priceSale %>">
           </td>
         </tr>
         <tr>
@@ -62,40 +63,53 @@
             <span class="red">*</span>
           </td>
           <td class="content">
-            <input type="number" name="amount" class="form-control small" placeholder="재고량" value="<%=prd.amount%>">
+            <input type="number" name="amount" class="form-control small" placeholder="재고량" value="<%= prd.amount %>">
             <div class="red">* -1을 입력하면 재고량 파악을 하지 않습니다(무제한)</div>
           </td>
         </tr>
         <tr>
           <td class="title">요약설명</td>
           <td>
-            <textarea name="summary" class="form-control" placeholder="내용을 입력하세요." style="min-height: 200px;"
-              value="<%=prd.content%>"></textarea>
+            <textarea name="summary" class="form-control" placeholder="내용을 입력하세요." style="min-height: 200px;"><%= prd.summary %></textarea>
           </td>
         </tr>
         <tr>
           <td colspan="2">
-            <div id="editor" style="min-height: 200px;"></div>
+            <div id="editor" style="min-height: 200px;"><%- prd.content %></div>
             <input type="hidden" name="content">
           </td>
         </tr>
         <tr>
           <td>이미지 첨부</td>
           <td>
-            <% for(let i=0; i<5; i++) { %>
-            <input type="file" name="img" class="form-control-file mb-2">
-            <% if (i === 0) { %>
-            <div class="red">상품리스트에 노출되는 대표 이미지 입니다. 필수로 넣어주세요.</div>
-            <hr>
-            <% } %>
+            <% for(let i=0; i<5; i++) { %> 
+              <% if(prd.imgs[i]) { %>
+                  <div class="file-wrap">
+                  <% let { thumbSrc, name, id, type } = prd.imgs[i]; %>
+                    <img src="<%= thumbSrc %>" alt="<%= name %>" class="img">
+                    <div class="file"><%= name %></div>
+                    <button type="button" data-name="img" class="btn btn-sm btn-danger" data-idx="<%= id %>" onclick="onDeleteFile('<%= id %>', this)">삭제</button>
+                  </div>
+              <% } else { %>
+                <input type="file" name="img" class="form-control-file mb-2">
+              <% } %>
             <% } %>
           </td>
         </tr>
         <tr>
           <td>상세내용 첨부</td>
           <td>
-            <% for(let i=0; i<2; i++) { %>
-            <input type="file" name="detail" class="form-control-file mb-2">
+            <% for(let i=0; i<2; i++) { %> 
+              <% if(prd.details[i]) { %>,
+                  <div class="file-wrap">
+                  <% let { thumbSrc, name, id, type } = prd.details[i]; %>
+                    <img src="<%= thumbSrc %>" alt="<%= name %>" class="img">
+                    <div class="file"><%= name %></div>
+                    <button type="button" data-name="detail" class="btn btn-sm btn-danger" data-idx="<%= id %>" onclick="onDeleteFile('<%= id %>', this)">삭제</button>
+                  </div>
+              <% } else { %>
+                <input type="file" name="detail" class="form-control-file mb-2">
+              <% } %>
             <% } %>
           </td>
         </tr>
@@ -117,5 +131,12 @@
 <script src="/js/quill.min.js"></script>
 <script src="/js/axios.min.js"></script>
 <script src="/js/jstree.min.js"></script>
+<script>
+  var cateArr = [];
+  <% for(let v of cate) { %>
+    cateArr.push('<%= v %>');
+  <% } %>
+</script>
 <script src="/js/<%= currents[1] %>/<%= currents[1] %>-update.js"></script>
+<script></script>
 <%- include('../../inc/foot.ejs') %>

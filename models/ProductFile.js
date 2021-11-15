@@ -43,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
     ProductFile.belongsTo(models.Product, {
       foreignKey: {
         name: 'prd_id',
-        allowNull: false,
+        allowNull: true,
       },
       sourceKey: 'id',
       onUpdate: 'CASCADE',

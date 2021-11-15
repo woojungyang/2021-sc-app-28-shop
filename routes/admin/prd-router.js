@@ -4,12 +4,11 @@ const router = express.Router();
 const { escape, unescape } = require('html-escaper');
 const createError = require('http-errors');
 const { error } = require('../../modules/util');
-const { Product, ProductFile, CateProduct } = require('../../models');
+const { Product, ProductFile, CateProduct, Cate } = require('../../models');
 const uploader = require('../../middlewares/multer-mw');
 const afterUploader = require('../../middlewares/after-multer-mw');
 const { moveFile } = require('../../modules/util');
 const queries = require('../../middlewares/query-mw');
-const { includes } = require('lodash');
 
 router.get('/', queries(), (req, res, next) => {
   if (req.query.type === 'create') {
@@ -19,7 +18,10 @@ router.get('/', queries(), (req, res, next) => {
 
 router.get('/', queries(), async (req, res, next) => {
   try {
-    const { lists, pager, totalRecord } = await Product.getLists(req.query, ProductFile);
+    const { lists, pager, totalRecord } = await Product.getLists(
+      req.query,
+      ProductFile
+    );
     // res.json({ lists, pager, totalRecord });
     res.render('admin/prd/prd-list', { lists, pager, totalRecord });
   } catch (err) {
@@ -29,12 +31,9 @@ router.get('/', queries(), async (req, res, next) => {
 
 router.get('/:id', queries(), async (req, res, next) => {
   try {
-    /* const prd = await Product.findOne({
-      where: { id: req.params.id },
-      include: [{ model: Cate, attributes: ['id'] }],
-    }); */
-    const prd = await Product.findProuduct(req.params.id, Cate, ProductFile);
-    res.render('admin/prd/prd-update', { prd });
+    const prd = await Product.findProduct(req.params.id, Cate, ProductFile);
+    const cate = prd.Cates.map((v) => v.id);
+    res.render('admin/prd/prd-update', { prd, cate });
   } catch (err) {
     next(createError(err));
   }
@@ -48,21 +47,28 @@ router.post(
   async (req, res, next) => {
     try {
       if (req.body.type === 'update') {
-        // await Board.update(req.body, { where: { id: req.body.id } });
-        // req.files.forEach((file) => (file.board_id = req.body.id));
-        // const files = await BoardFile.bulkCreate(req.files);
+        req.body.content = escape(req.body.content);
+        await Product.update(req.body, { where: { id: req.body.id } });
+        req.files.forEach((file) => (file.prd_id = req.body.id));
+        const files = await ProductFile.bulkCreate(req.files);
+        await CateProduct.destroy({ where: { prd_id: req.body.id } });
+        const catePrd = req.body.cate.split(',').map((cate) => ({
+          cate_id: cate,
+          prd_id: req.body.id,
+        }));
+        if (req.body.cate !== '') await CateProduct.bulkCreate(catePrd);
         // res.json({ file: req.files, req: req.body, locals: res.locals });
-        // res.redirect(res.locals.goList);
+        res.redirect(res.locals.goList);
       } else {
         req.body.content = escape(req.body.content);
         const product = await Product.create(req.body);
         req.files.forEach((file) => (file.prd_id = product.id));
-        await ProductFile.bulkCreate(req.files);
+        if (req.files.length) await ProductFile.bulkCreate(req.files);
         const catePrd = req.body.cate.split(',').map((cate) => ({
           cate_id: cate,
           prd_id: product.id,
         }));
-        await CateProduct.bulkCreate(catePrd);
+        if (req.body.cate !== '') await CateProduct.bulkCreate(catePrd);
         res.redirect('/admin/prd');
       }
     } catch (err) {

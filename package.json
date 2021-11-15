@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/woojungyang/2021-sc-app-28-shop#readme",
   "dependencies": {
+    "axios": "^0.24.0",
     "bcrypt": "^5.0.1",
     "cross-env": "^7.0.3",
     "dotenv": "^10.0.0",

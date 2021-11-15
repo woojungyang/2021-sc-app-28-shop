@@ -2,7 +2,6 @@ const _ = require('lodash');
 const numeral = require('numeral');
 const { dateFormat, relPath } = require('../modules/util');
 const createPager = require('../modules/pager-init');
-4;
 const { unescape } = require('html-escaper');
 
 module.exports = (sequelize, { DataTypes, Op }) => {
@@ -49,7 +48,7 @@ module.exports = (sequelize, { DataTypes, Op }) => {
       },
       readCounter: {
         type: DataTypes.INTEGER(10).UNSIGNED,
-        defaulValue: 0,
+        defaultValue: 0,
       },
     },
     {
@@ -64,7 +63,7 @@ module.exports = (sequelize, { DataTypes, Op }) => {
     Product.hasMany(models.ProductFile, {
       foreignKey: {
         name: 'prd_id',
-        allowNull: false,
+        allowNull: true,
       },
       sourceKey: 'id',
       onUpdate: 'CASCADE',
@@ -73,7 +72,6 @@ module.exports = (sequelize, { DataTypes, Op }) => {
     Product.belongsToMany(models.Cate, {
       foreignKey: {
         name: 'prd_id',
-        allowNull: false,
       },
       through: 'cate_product',
       onUpdate: 'CASCADE',
@@ -85,6 +83,36 @@ module.exports = (sequelize, { DataTypes, Op }) => {
     return await this.count({
       where: sequelize.getWhere(query),
     });
+  };
+
+  Product.findProduct = async function (id, Cate, ProductFile) {
+    const rs = await this.findOne({
+      where: { id },
+      order: [[ProductFile, 'id', 'asc']],
+      include: [{ model: Cate }, { model: ProductFile }],
+    });
+    const data = rs.toJSON();
+    data.updatedAt = dateFormat(data.updatedAt, 'H');
+    data.readCounter = numeral(data.readCounter).format();
+    data.content = unescape(data.content);
+    data.imgs = [];
+    data.details = [];
+    if (data.ProductFiles.length) {
+      for (let file of data.ProductFiles) {
+        let obj = {
+          thumbSrc: relPath(file.saveName),
+          name: file.oriName,
+          id: file.id,
+          type: file.fileType,
+        };
+        if (obj.type === 'F') data.details.push(obj);
+        else data.imgs.push(obj);
+      }
+    }
+    delete data.createdAt;
+    delete data.deletedAt;
+    delete data.ProductFiles;
+    return data;
   };
 
   Product.getListData = function (rs, type) {
@@ -101,43 +129,12 @@ module.exports = (sequelize, { DataTypes, Op }) => {
             }
           }
         }
-        if (!v.img) {
-          v.img = v.img || 'https://via.placeholder.com/120';
-        }
+        v.img = v.img || 'https://via.placeholder.com/120';
         delete v.createdAt;
         delete v.deletedAt;
         delete v.ProductFiles;
         return v;
       });
-    return data;
-  };
-  Product.findProduct = async function (id, Cate, ProductFile) {
-    const rs = await this.findOne({
-      where: { id },
-      include: [{ model: Cate, ProductFile }],
-    });
-    const data = rs.toJSON();
-    data.updatedAt = dateFormat(data.updatedAt, 'H');
-    data.readCounter = numeral(data.readCounter).format();
-    data.content = unescape(data.content);
-    data.img = [];
-    data.detail = [];
-    if (data.ProductFiles.length) {
-      for (let file of data.ProductFiles) {
-        let obj = {
-          thumbSrc: relPath(file.saveName),
-          name: file.oriName,
-          id: file.id,
-          type: file.fileType,
-        };
-        if (obj.type === 'F') data.detail.push(obj);
-        else data.img.push(obj);
-      }
-      delete data.createdAt;
-      delete data.deletedAt;
-      delete data.ProductFiles;
-      return v;
-    }
     return data;
   };
 
@@ -163,7 +160,7 @@ module.exports = (sequelize, { DataTypes, Op }) => {
         [ProductFile, 'id', 'ASC'],
       ],
     });
-    const list = this.getViewData(rs);
+    const lists = this.getListData(rs);
 
     return { lists, pager, totalRecord: numeral(pager.totalRecord).format() };
   };
