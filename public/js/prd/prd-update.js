@@ -28,7 +28,8 @@ $('#jstreeWrap')
 function onLoadedTree(e, data) {
   allData = data.instance._model.data;
   console.log(allData);
-  // $('#jstreeWrap').jstree('check_node', 'j1_11');
+  $('#jstreeWrap').jstree('check_node', 'j1_11');
+  onCloseModal();
 }
 
 function onChangeTree(e, data) {

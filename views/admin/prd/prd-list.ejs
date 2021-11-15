@@ -6,7 +6,7 @@
     <div class="d-flex">
       <%- include('../../inc/search.ejs') %>
       <%- include('../../inc/sort.ejs') %>
-      <a href="/<%= currents[0] %>/prd?type=create" class="btn btn-primary ml-auto">상품등록</a>
+      <a href="<%= goList %>&type=create" class="btn btn-primary ml-auto">상품등록</a>
     </div>
   </div>
   <table class="table text-center border-bottom">
@@ -26,7 +26,7 @@
       <tr>
         <td><%= totalRecord - (page - 1) * 5 - i++ %></td>
         <td class="td-icon">
-          <img src="<%= v.img.thumbSrc %>" alt="prd">
+          <img src="<%= v.img %>" alt="prd">
         </td>
         <td class="text-left">
           <a href="<%= goPath %>/<%= v.id %>?<%= goQuery %>"><%= v.title %></a>
@@ -36,15 +36,30 @@
           <div class="price-ori"><%= v.priceOrigin %>원</div>
         </td>
         <td>
-          <select name="status" class="form-control">
-            <option value="0" <%= v.status === '0' ? 'selected' : '' %>>판매중단</option>
-            <option value="1" <%= v.status === '1' ? 'selected' : '' %>>재고없음</option>
-            <option value="2" <%= v.status === '2' ? 'selected' : '' %>>판매중</option>
-          </select>
+          <form action="<%= goPath %>/status" method="POST">
+            <input type="hidden" name="id" value="<%= v.id %>">
+            <input type="hidden" name="_method" value="PUT">
+            <% for(let v2 of goLists) { %>
+            <input type="hidden" name="<%= v2.key %>" value="<%= v2.value %>">
+            <% } %>
+            <select name="status" class="form-control" onchange="this.form.submit();">
+              <option value="0" <%= v.status === '0' ? 'selected' : '' %>>판매중단</option>
+              <option value="1" <%= v.status === '1' ? 'selected' : '' %>>재고없음</option>
+              <option value="2" <%= v.status === '2' ? 'selected' : '' %>>판매중</option>
+            </select>
+          </form>
         </td>
         <td>
-          <a href="/<%= currents[0] %>/<%= currents[1] %>/<%= v.id %>" class="btn btn-success">수정</a>
-          <a href="/<%= currents[0] %>/prd/1" class="btn btn-danger">삭제</a>
+          <a href="<%= goPath %>/<%= v.id %>" class="btn btn-success">수정</a>
+          <form class="d-inline-block" action="<%= goPath %>" method="POST"
+            onsubmit="return confirm('삭제하시겠습니까?') ? true : false;">
+            <input type="hidden" name="id" value="<%= v.id %>">
+            <input type="hidden" name="_method" value="DELETE">
+            <% for(let v2 of goLists) { %>
+            <input type="hidden" name="<%= v2.key %>" value="<%= v2.value %>">
+            <% } %>
+            <button class="btn btn-danger">삭제</button>
+          </form>
         </td>
       </tr>
       <% } %>

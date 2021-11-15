@@ -50,3 +50,10 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 module.exports = db;
+
+/* 
+getWhere가 index에 있는 이유
+search 를 할때에는 무조건 query를 전달받음.
+
+
+*/

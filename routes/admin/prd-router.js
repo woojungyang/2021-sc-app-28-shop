@@ -1,7 +1,7 @@
 const path = require('path');
 const express = require('express');
 const router = express.Router();
-const escape = require('escape-html');
+const { escape, unescape } = require('html-escaper');
 const createError = require('http-errors');
 const { error } = require('../../modules/util');
 const { Product, ProductFile, CateProduct } = require('../../models');
@@ -9,8 +9,9 @@ const uploader = require('../../middlewares/multer-mw');
 const afterUploader = require('../../middlewares/after-multer-mw');
 const { moveFile } = require('../../modules/util');
 const queries = require('../../middlewares/query-mw');
+const { includes } = require('lodash');
 
-router.get('/', (req, res, next) => {
+router.get('/', queries(), (req, res, next) => {
   if (req.query.type === 'create') {
     res.render('admin/prd/prd-form');
   } else next();
@@ -26,9 +27,14 @@ router.get('/', queries(), async (req, res, next) => {
   }
 });
 
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', queries(), async (req, res, next) => {
   try {
-    res.render('admin/prd/prd-form');
+    /* const prd = await Product.findOne({
+      where: { id: req.params.id },
+      include: [{ model: Cate, attributes: ['id'] }],
+    }); */
+    const prd = await Product.findProuduct(req.params.id, Cate, ProductFile);
+    res.render('admin/prd/prd-update', { prd });
   } catch (err) {
     next(createError(err));
   }
@@ -73,9 +79,27 @@ router.put('/', async (req, res, next) => {
   }
 });
 
-router.delete('/', async (req, res, next) => {
+router.put('/status', queries('body'), async (req, res, next) => {
   try {
-    res.redirect('/admin/prd');
+    const { status, id } = req.body;
+    await Product.update({ status }, { where: { id } });
+    res.redirect(res.locals.goList);
+  } catch (err) {
+    next(createError(err));
+  }
+});
+
+router.delete('/', queries('body'), async (req, res, next) => {
+  try {
+    const { id } = req.body;
+    await Product.destroy({ where: { id } });
+    const files = await ProductFile.findAll({
+      attributes: ['saveName'],
+      where: { prd_id: id },
+    });
+    for (let { saveName } of files) await moveFile(saveName);
+    await ProductFile.destroy({ where: { prd_id: id } });
+    res.redirect(res.locals.goList);
   } catch (err) {
     next(createError(err));
   }
