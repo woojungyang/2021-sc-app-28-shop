@@ -49,7 +49,7 @@
           </form>
         </td>
         <td>
-          <a href="<%= goPath %>/<%= v.id %>" class="btn btn-success">수정</a>
+          <a href="<%= goPath %>/<%= v.id %>?<%= goQuery %>&type=update" class="btn btn-success">수정</a>
           <form class="d-inline-block" action="<%= goPath %>" method="POST"
             onsubmit="return confirm('삭제하시겠습니까?') ? true : false;">
             <input type="hidden" name="id" value="<%= v.id %>">

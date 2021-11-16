@@ -88,10 +88,10 @@
                   <% let { thumbSrc, name, id, type } = prd.imgs[i]; %>
                     <img src="<%= thumbSrc %>" alt="<%= name %>" class="img">
                     <div class="file"><%= name %></div>
-                    <button type="button" data-name="img" class="btn btn-sm btn-danger" data-idx="<%= id %>" onclick="onDeleteFile('<%= id %>', this)">삭제</button>
+                    <button type="button" data-name="img <%= (i+1) %>" class="btn btn-sm btn-danger" data-idx="<%= id %>" onclick="onDeleteFile('<%= id %>', this)">삭제</button>
                   </div>
               <% } else { %>
-                <input type="file" name="img" class="form-control-file mb-2">
+                <input type="file" name="img <%= (i+1) %>" class="form-control-file mb-2">
               <% } %>
             <% } %>
           </td>
@@ -105,10 +105,10 @@
                   <% let { thumbSrc, name, id, type } = prd.details[i]; %>
                     <img src="<%= thumbSrc %>" alt="<%= name %>" class="img">
                     <div class="file"><%= name %></div>
-                    <button type="button" data-name="detail" class="btn btn-sm btn-danger" data-idx="<%= id %>" onclick="onDeleteFile('<%= id %>', this)">삭제</button>
+                    <button type="button" data-name="detail <%= (i+1) %>" class="btn btn-sm btn-danger" data-idx="<%= id %>" onclick="onDeleteFile('<%= id %>', this)">삭제</button>
                   </div>
               <% } else { %>
-                <input type="file" name="detail" class="form-control-file mb-2">
+                <input type="file" name="detail <%= (i+1) %>" class="form-control-file mb-2">
               <% } %>
             <% } %>
           </td>

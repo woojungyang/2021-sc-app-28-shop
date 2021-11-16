@@ -1,0 +1,42 @@
+<script>
+  function findObj(_obj, id) {
+  let a = null;
+  function findInner(_obj, id) {
+    if (_obj.id !== id) {
+      if (_obj.children) {
+        for (let v of _obj.children) {
+          findInner(v, id);
+        }
+      }
+    } else {
+      a = _obj;
+    }
+    return a;
+  }
+  return findInner(_obj, id);
+}
+
+ const obj = {
+    id: 1,
+    children: [{
+        id: 2,
+        children: [{
+          id: 6
+        }]
+      },
+      {
+        id: 3,
+        children: [{
+            id: 4
+          },
+          {
+            id: 5
+          },
+        ]
+      }
+    ]
+  };
+
+
+  console.log(findObj(obj, 3));
+</script>

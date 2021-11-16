@@ -1,43 +1,69 @@
 <script>
-  function findChild(_obj, arr) {
-    if (_obj.children) {
-      for (let v of _obj.children) {
-        findChild(v, arr)
-      }
-    }
-    arr.push(_obj.id);
-    return arr;
-  }
-
-  function findObj(_obj, id) {
-    let a = null;
-
-    function findChild(_obj, id) {
-      if (_obj.id !== id) {
-        if (_obj.children) {
-          for (let v of _obj.children) {
-            findChild(v, id);
-          }
+function findObj(_obj, id) {
+  let a = null;
+  function findInner(_obj, id) {
+    if (_obj.id !== id) {
+      if (_obj.children) {
+        for (let v of _obj.children) {
+          findInner(v, id);
         }
-      } else {
-        a = _obj;
       }
-      return a;
+    } else {
+      a = _obj;
     }
-    return findChild(_obj, id)
+    return a;
   }
+  return findInner(_obj, id);
+}
 
+// _obj의 자식의 id를 리턴하는 재귀함수
+function findChildId(_obj) {
+  const arr = [];
+  if (_obj.children) {
+    for (let v of _obj.children) {
+      arr.push(v);
+    }
+  }
+  return arr;
+}
+
+// _obj의 자손들중 Endpoint id를 리턴하는 재귀함수
+function findLastId(_obj, arr) {
+  console.log(_obj)
+  if (_obj.children && _obj.children.length) {
+    for (let v of _obj.children) {
+      findLastId(v, arr);
+    }
+  } else {
+    arr.push(_obj.id);
+  }
+  return arr;
+}
+
+// _obj의 자식들의 id를 리턴하는 재귀함수
+function findAllId(_obj, arr) {
+  if (_obj.children) {
+    for (let v of _obj.children) {
+      findAllId(v, arr);
+    }
+  }
+  arr.push(_obj.id);
+  return arr;
+}
   const obj = {
     id: 1,
     children: [{
         id: 2,
-        children: [{
-          id: 6
-        }]
+        children: [
+          {
+            id: 6
+          }
+        ]
       },
       {
         id: 3,
-        children: [{
+        children: [
+          {
             id: 4
           },
           {
@@ -49,5 +75,8 @@
   };
 
   console.log(findObj(obj, 3));
-  console.log(findChild(obj, []))
+  console.log(findChildId(obj, []))
+  console.log(findAllId(obj, []))
+  console.log(findLastId(obj, []))
+
 </script>

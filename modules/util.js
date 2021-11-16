@@ -4,7 +4,8 @@ const moment = require('moment');
 
 const location = (src) => path.join(__dirname, '../', src);
 
-const cutTail = (str, len = 12) => (str.length > len ? str.substr(0, len) + ' ...' : str);
+const cutTail = (str, len = 12) =>
+  str.length > len ? str.substr(0, len) + ' ...' : str;
 
 const telNumber = [
   '010',
@@ -51,7 +52,8 @@ const zipExt = ['zip', 'alz'];
 const exts = { imgExt, mediaExt, docExt, zipExt };
 
 const relPath = (file) => `/uploads/${file.split('_')[0]}/${file}`;
-const absPath = (file) => path.join(__dirname, `../storages/${file.split('_')[0]}/${file}`);
+const absPath = (file) =>
+  path.join(__dirname, `../storages/${file.split('_')[0]}/${file}`);
 const moveFile = async (file) => {
   try {
     let savePath = path.join(__dirname, '../storages-remove', file.split('_')[0]);
@@ -74,7 +76,8 @@ const getIcon = (file) => {
   return '';
 };
 
-const isImg = (file) => (imgExt.includes(path.extname(file).substr(1)) ? true : false);
+const isImg = (file) =>
+  imgExt.includes(path.extname(file).substr(1)) ? true : false;
 
 const alert = (msg, loc = '/') => {
   return `<script>
@@ -147,7 +150,7 @@ function findChildId(_obj) {
 
 // _obj의 자손들중 Endpoint id를 리턴하는 재귀함수
 function findLastId(_obj, arr) {
-  if (_obj.children.length) {
+  if (_obj.children && _obj.children.length) {
     for (let v of _obj.children) {
       findLastId(v, arr);
     }
