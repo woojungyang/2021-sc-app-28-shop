@@ -8,8 +8,10 @@ const { error } = require('../../modules/util');
 const { Product, ProductFile, CateProduct, Cate } = require('../../models');
 const uploader = require('../../middlewares/multer-mw');
 const afterUploader = require('../../middlewares/after-multer-mw');
+const sharpInit = require('../../middlewares/sharp-mw');
 const { moveFile } = require('../../modules/util');
 const queries = require('../../middlewares/query-mw');
+const { isAdmin } = require('../../middlewares/auth-mw');
 
 router.get('/', queries(), (req, res, next) => {
   if (req.query.type === 'create') {
@@ -60,6 +62,7 @@ router.post(
     'detail_1',
     'detail_2',
   ]),
+  sharpInit(300),
   queries('body'),
   async (req, res, next) => {
     try {
@@ -112,7 +115,7 @@ router.put('/status', queries('body'), async (req, res, next) => {
   }
 });
 
-router.delete('/', queries('body'), async (req, res, next) => {
+router.delete('/', isAdmin(8), queries('body'), async (req, res, next) => {
   try {
     const { id } = req.body;
     await Product.destroy({ where: { id } });

@@ -6,6 +6,7 @@ const tree = require('../../middlewares/tree-mw');
 const { Op } = require('sequelize');
 const { findAlldId, findObj, findAllId } = require('../../modules/util');
 const router = express.Router();
+const { isAdmin } = require('../../middlewares/auth-mw');
 
 router.get('/', async (req, res, next) => {
   try {
@@ -37,7 +38,7 @@ router.post('/', async (req, res, next) => {
   }
 });
 
-router.delete('/', tree(), async (req, res, next) => {
+router.delete('/', isAdmin(8), tree(), async (req, res, next) => {
   try {
     const treeArray = findAllId(findObj(req.tree, req.body.id), []);
     await Cate.destroy({ where: { id: { [Op.or]: treeArray } } });

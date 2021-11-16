@@ -52,15 +52,26 @@ const zipExt = ['zip', 'alz'];
 const exts = { imgExt, mediaExt, docExt, zipExt };
 
 const relPath = (file) => `/uploads/${file.split('_')[0]}/${file}`;
+const relThumbPath = (file) => `/uploads/${file.split('_')[0]}/thumb/${file}`;
 const absPath = (file) =>
   path.join(__dirname, `../storages/${file.split('_')[0]}/${file}`);
+const absThumbPath = (file) =>
+  path.join(__dirname, `../storages/${file.split('_')[0]}/thumb/${file}`);
 const moveFile = async (file) => {
   try {
     let savePath = path.join(__dirname, '../storages-remove', file.split('_')[0]);
+    let saveThumbPath = path.join(savePath, 'thumb');
     let oldPath = absPath(file);
     await fs.ensureDir(savePath); // D:\ ~ /210909
     savePath = path.join(savePath, file); // D:\ ~ /210909/210909_fjk2134-askdf2103.jpg
     await fs.move(oldPath, savePath);
+
+    if (await fs.pathExists(absThumbPath(file))) {
+      let oldThumbPath = absThumbPath(file);
+      await fs.ensureDir(saveThumbPath);
+      saveThumbPath = path.join(saveThumbPath, file);
+      await fs.move(oldThumbPath, saveThumbPath);
+    }
     return true;
   } catch (err) {
     return err;
@@ -190,4 +201,6 @@ module.exports = {
   findChildId,
   findAllId,
   findObj,
+  absThumbPath,
+  relThumbPath,
 };

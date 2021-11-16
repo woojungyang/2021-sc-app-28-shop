@@ -1,3 +1,5 @@
+const { alert } = require('../../../modules/util');
+
 // jsTree
 var allData = null;
 var selData = [];
@@ -129,6 +131,6 @@ function onDeleteFile(id, el) {
   }
   function onError(err) {
     console.log(err);
-    console.log(err.response);
+    if (err.response.data.msg) alert(err.response.data.msg);
   }
 }

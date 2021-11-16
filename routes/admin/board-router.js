@@ -9,6 +9,7 @@ const counter = require('../../middlewares/board-counter-mw');
 const queries = require('../../middlewares/query-mw');
 const { Board, BoardFile, BoardComment } = require('../../models');
 const { moveFile } = require('../../modules/util');
+const { isAdmin } = require('../../middlewares/auth-mw');
 
 // 신규글 작성
 router.get('/', boardInit(), queries(), (req, res, next) => {
@@ -44,7 +45,12 @@ router.get('/:id', boardInit(), queries(), counter, async (req, res, next) => {
 // 상세보기
 router.get('/:id', boardInit(), queries(), async (req, res, next) => {
   try {
-    const { lists, pager } = await Board.getList(req.params.id, req.query, BoardFile, BoardComment);
+    const { lists, pager } = await Board.getList(
+      req.params.id,
+      req.query,
+      BoardFile,
+      BoardComment
+    );
     // res.json({ list: Board.getViewData(lists)[0], pager });
     res.render('admin/board/board-view', {
       list: Board.getViewData(lists)[0],
@@ -60,6 +66,7 @@ router.post(
   '/',
   uploader.fields([{ name: 'img' }, { name: 'pds' }]),
   afterUploader(['img', 'pds']),
+
   boardInit('body'),
   queries('body'),
   async (req, res, next) => {
@@ -84,26 +91,32 @@ router.post(
   }
 );
 
-router.delete('/', boardInit(), queries('body'), async (req, res, next) => {
-  try {
-    await Board.destroy({ where: { id: req.body.id } });
-    const files = await BoardFile.findAll({
-      attributes: ['saveName'],
-      where: { board_id: req.body.id },
-    });
-    await BoardFile.destroy({
-      where: { board_id: req.body.id },
-    });
-    await BoardComment.destroy({
-      where: { board_id: req.body.id },
-    });
-    for (let { saveName } of files) {
-      await moveFile(saveName);
+router.delete(
+  '/',
+  isAdmin(8),
+  boardInit(),
+  queries('body'),
+  async (req, res, next) => {
+    try {
+      await Board.destroy({ where: { id: req.body.id } });
+      const files = await BoardFile.findAll({
+        attributes: ['saveName'],
+        where: { board_id: req.body.id },
+      });
+      await BoardFile.destroy({
+        where: { board_id: req.body.id },
+      });
+      await BoardComment.destroy({
+        where: { board_id: req.body.id },
+      });
+      for (let { saveName } of files) {
+        await moveFile(saveName);
+      }
+      res.redirect(res.locals.goList);
+    } catch (err) {
+      next(createError(err));
     }
-    res.redirect(res.locals.goList);
-  } catch (err) {
-    next(createError(err));
   }
-});
+);
 
 module.exports = { name: '/board', router };

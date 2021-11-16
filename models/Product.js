@@ -1,6 +1,6 @@
 const _ = require('lodash');
 const numeral = require('numeral');
-const { dateFormat, relPath } = require('../modules/util');
+const { dateFormat, relPath, relThumbPath } = require('../modules/util');
 const createPager = require('../modules/pager-init');
 const { unescape } = require('html-escaper');
 
@@ -128,7 +128,7 @@ module.exports = (sequelize, { DataTypes, Op }) => {
         );
         v.img =
           idx > -1
-            ? relPath(v.ProductFiles[idx].saveName)
+            ? relThumbPath(v.ProductFiles[idx].saveName)
             : 'https://via.placeholder.com/120';
         delete v.createdAt;
         delete v.deletedAt;
@@ -167,7 +167,6 @@ module.exports = (sequelize, { DataTypes, Op }) => {
 
   return Product;
 };
-
 /* 
 * JSON.stringify() 메소드
 JSON.stringify() 메소드는 인수로 전달받은 자바스크립트 객체를 문자열로 변환하여 반환합니다.

@@ -8,7 +8,7 @@ const { telNumber, alert, getSeparateArray } = require('../../modules/util');
 const { User } = require('../../models');
 
 // 회원 등록 화면
-router.get('/', isAdmin(8), queries(), (req, res, next) => {
+router.get('/', queries(), (req, res, next) => {
   if (req.query.type === 'create') {
     const ejs = { telNumber };
     res.render('admin/user/user-form', ejs);
@@ -16,7 +16,7 @@ router.get('/', isAdmin(8), queries(), (req, res, next) => {
 });
 
 // 회원리스트
-router.get('/', isAdmin(8), queries(), async (req, res, next) => {
+router.get('/', queries(), async (req, res, next) => {
   try {
     let { field, search, sort, status } = req.query;
     const { lists, pager, totalRecord } = await User.getLists(req.query);
@@ -28,7 +28,7 @@ router.get('/', isAdmin(8), queries(), async (req, res, next) => {
 });
 
 // 회원 수정 화면
-router.get('/:id', isAdmin(8), queries(), async (req, res, next) => {
+router.get('/:id', queries(), async (req, res, next) => {
   try {
     const userInfo = await User.findOne({ where: { id: req.params.id } });
     userInfo.tel = getSeparateArray(userInfo.tel, '-');
