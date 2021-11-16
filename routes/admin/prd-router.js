@@ -1,5 +1,6 @@
 const path = require('path');
 const express = require('express');
+const _ = require('lodash');
 const router = express.Router();
 const { escape, unescape } = require('html-escaper');
 const createError = require('http-errors');
@@ -10,14 +11,12 @@ const afterUploader = require('../../middlewares/after-multer-mw');
 const { moveFile } = require('../../modules/util');
 const queries = require('../../middlewares/query-mw');
 
-//상품업로드
 router.get('/', queries(), (req, res, next) => {
   if (req.query.type === 'create') {
     res.render('admin/prd/prd-form');
   } else next();
 });
 
-//상품리스트
 router.get('/', queries(), async (req, res, next) => {
   try {
     const { lists, pager, totalRecord } = await Product.getLists(
@@ -31,18 +30,16 @@ router.get('/', queries(), async (req, res, next) => {
   }
 });
 
-//상품수정
 router.get('/:id', queries(), async (req, res, next) => {
   try {
     const prd = await Product.findProduct(req.params.id, Cate, ProductFile);
     const cate = prd.Cates.map((v) => v.id);
-    res.render('admin/prd/prd-update', { prd, cate });
+    res.render('admin/prd/prd-update', { prd, cate, _ });
   } catch (err) {
     next(createError(err));
   }
 });
 
-//상품수정
 router.post(
   '/',
   uploader.fields([
@@ -67,7 +64,6 @@ router.post(
   async (req, res, next) => {
     try {
       if (req.body.type === 'update') {
-        console.log(req.body);
         req.body.content = escape(req.body.content);
         await Product.update(req.body, { where: { id: req.body.id } });
         req.files.forEach((file) => (file.prd_id = req.body.id));
@@ -106,7 +102,6 @@ router.put('/', async (req, res, next) => {
   }
 });
 
-//제품상태수정
 router.put('/status', queries('body'), async (req, res, next) => {
   try {
     const { status, id } = req.body;
@@ -117,7 +112,6 @@ router.put('/status', queries('body'), async (req, res, next) => {
   }
 });
 
-//삭제
 router.delete('/', queries('body'), async (req, res, next) => {
   try {
     const { id } = req.body;

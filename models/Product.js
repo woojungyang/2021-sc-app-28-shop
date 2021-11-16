@@ -104,6 +104,7 @@ module.exports = (sequelize, { DataTypes, Op }) => {
           name: file.oriName,
           id: file.id,
           type: file.fileType,
+          fieldNum: file.fieldNum,
         };
         if (obj.type === 'F') data.details.push(obj);
         else data.imgs.push(obj);
@@ -121,15 +122,14 @@ module.exports = (sequelize, { DataTypes, Op }) => {
       .map((v) => {
         v.priceOrigin = numeral(v.priceOrigin).format();
         v.priceSale = numeral(v.priceSale).format();
-        if (v.ProductFiles.length) {
-          for (let file of v.ProductFiles) {
-            if (file.fileType === 'I') {
-              v.img = relPath(file.saveName);
-              break;
-            }
-          }
-        }
-        v.img = v.img || 'https://via.placeholder.com/120';
+        let idx = _.findIndex(
+          v.ProductFiles,
+          (v2) => v2.fieldNum == '1' && v2.fileType == 'I'
+        );
+        v.img =
+          idx > -1
+            ? relPath(v.ProductFiles[idx].saveName)
+            : 'https://via.placeholder.com/120';
         delete v.createdAt;
         delete v.deletedAt;
         delete v.ProductFiles;
@@ -157,12 +157,11 @@ module.exports = (sequelize, { DataTypes, Op }) => {
       ],
       order: [
         [field, sort],
-        [ProductFile, 'fileType', 'DESC'],
+        [ProductFile, 'fileType', 'ASC'],
         [ProductFile, 'fieldNum', 'ASC'],
       ],
     });
     const lists = this.getListData(rs);
-
     return { lists, pager, totalRecord: numeral(pager.totalRecord).format() };
   };
 

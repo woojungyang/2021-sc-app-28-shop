@@ -7,8 +7,8 @@ module.exports = (fields) => {
           v.oriName = v.originalname;
           v.saveName = v.filename;
           v.mimeType = v.mimetype;
-          v.fieldNum = v.fieldName.split('_')[1];
-          v.fileType = v.fieldName.split('_')[0] === 'img' ? 'I' : 'F';
+          v.fieldNum = v.fieldname.split('_')[1];
+          v.fileType = v.fieldname.split('_')[0] === 'img' ? 'I' : 'F';
           files.push(v);
         });
       }

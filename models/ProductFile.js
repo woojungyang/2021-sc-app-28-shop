@@ -27,11 +27,11 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: 'I',
       },
       fieldNum: {
-        type: DataTypes.INTEGER(10),
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       size: {
-        type: DataTypes.INTEGER(10),
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
     },

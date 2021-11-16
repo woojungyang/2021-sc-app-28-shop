@@ -82,7 +82,7 @@
   }
   &.update-wrapper {
     .file-wrap {
-      display: flex;
+      @include flex($v: flex-end, $w: wrap);
       align-items: flex-end;
       margin-bottom: 0.5em;
       padding-bottom: 0.5em;
