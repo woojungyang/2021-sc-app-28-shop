@@ -4,6 +4,7 @@ module.exports = async (req, res, next) => {
   try {
     const ip = req.ip;
     const referrer = req.get('Referer') || req.get('Referrer') || null;
+    //이전페이지
     const user_id = null;
     await BoardCounter.create({
       ip,

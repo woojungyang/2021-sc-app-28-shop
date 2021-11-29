@@ -66,7 +66,6 @@ router.post(
   '/',
   uploader.fields([{ name: 'img' }, { name: 'pds' }]),
   afterUploader(['img', 'pds']),
-
   boardInit('body'),
   queries('body'),
   async (req, res, next) => {

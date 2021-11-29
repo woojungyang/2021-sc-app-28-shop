@@ -52,11 +52,15 @@ const zipExt = ['zip', 'alz'];
 const exts = { imgExt, mediaExt, docExt, zipExt };
 
 const relPath = (file) => `/uploads/${file.split('_')[0]}/${file}`;
+
 const relThumbPath = (file) => `/uploads/${file.split('_')[0]}/thumb/${file}`;
+
 const absPath = (file) =>
   path.join(__dirname, `../storages/${file.split('_')[0]}/${file}`);
+
 const absThumbPath = (file) =>
   path.join(__dirname, `../storages/${file.split('_')[0]}/thumb/${file}`);
+
 const moveFile = async (file) => {
   try {
     let savePath = path.join(__dirname, '../storages-remove', file.split('_')[0]);

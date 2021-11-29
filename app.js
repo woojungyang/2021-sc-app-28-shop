@@ -5,6 +5,7 @@ const app = express();
 const path = require('path');
 const helmet = require('helmet');
 const passport = require('passport');
+const cors = require('./middlewares/cors-mw');
 const passportModule = require('./passport');
 const method = require('./middlewares/method-mw');
 const logger = require('./middlewares/morgan-mw');
@@ -25,6 +26,7 @@ app.use(helmet({ contentSecurityPolicy: false }));
 /*************** static init **************/
 app.use('/', express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static(path.join(__dirname, 'storages')));
+app.use('/json', express.static(path.join(__dirname, 'json')));
 
 /************** view engine ***************/
 app.set('view engine', 'ejs');
@@ -32,6 +34,7 @@ app.set('views', './views');
 app.locals.pretty = true;
 
 /*************** middleware ***************/
+app.use(cors([...process.env.CORS_URL.split(';')]));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(method());

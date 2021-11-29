@@ -17,7 +17,7 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-router.put('/', async (req, res, next) => {
+router.put('/', isAdmin(7), async (req, res, next) => {
   try {
     const tree = await fs.writeJSON(
       path.join(__dirname, '../../json/tree.json'),
@@ -29,7 +29,7 @@ router.put('/', async (req, res, next) => {
   }
 });
 
-router.post('/', async (req, res, next) => {
+router.post('/', isAdmin(7), async (req, res, next) => {
   try {
     await Cate.create({ id: req.body.id });
     res.status(200).json({ success: true });
