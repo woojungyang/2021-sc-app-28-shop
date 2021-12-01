@@ -19,12 +19,18 @@
           <td class="title require">회원등급</td>
           <td class="content">
             <select name="status" class="form-control" style="width: 200px;">
-              <option value="0" <%= userInfo.status === '0' ? 'selected': '' %>>탈퇴회원</option>
-              <option value="1" <%= userInfo.status === '1' ? 'selected': '' %>>유휴회원</option>
-              <option value="2" <%= userInfo.status === '2' ? 'selected': '' %>>일반회원</option>
-              <option value="7" <%= userInfo.status === '7' ? 'selected': '' %>>관리자</option>
-              <option value="8" <%= userInfo.status === '8' ? 'selected': '' %>>중간관리자</option>
-              <option value="9" <%= userInfo.status === '9' ? 'selected': '' %>>최고관리자</option>
+              <option value="0" 
+                <%= userInfo.status === '0' ? 'selected': '' %>>탈퇴회원</option>
+              <option value="1" 
+                <%= userInfo.status === '1' ? 'selected': '' %>>유휴회원</option>
+              <option value="2" 
+                <%= userInfo.status === '2' ? 'selected': '' %>>일반회원</option>
+              <option value="7" 
+                <%= userInfo.status === '7' ? 'selected': '' %>>관리자</option>
+              <option value="8" 
+                <%= userInfo.status === '8' ? 'selected': '' %>>중간관리자</option>
+              <option value="9" 
+                <%= userInfo.status === '9' ? 'selected': '' %>>최고관리자</option>
             </select>
           </td>
         </tr>
@@ -47,7 +53,8 @@
             <select name="tel1" class="form-control" style="max-width: 100px;">
               <option value="">선택</option>
               <% for(let v of telNumber) { %>
-              <option value="<%=v%>" <%= (v === userInfo.tel[0] ? 'selected' :'')%>><%=v%></option>
+                <option value="<%=v%>" 
+                  <%= (v === userInfo.tel[0] ? 'selected' :'')%>><%=v%></option>
               <% } %>
             </select>
             <span class="px-2">-</span>
@@ -76,8 +83,7 @@
             </div>
             <input type="text" name="addrJibun" class="form-control mb-2" readonly placeholder="지번주소"
               value="<%= userInfo.addrJibun %>">
-            <input type="text" name="addrDetail" class="form-control" placeholder="상세주소"
-              value="<%= userInfo.addrDetail %>">
+            <input type="text" name="addrDetail" class="form-control" placeholder="상세주소" value="<%= userInfo.addrDetail %>">
           </td>
         </tr>
         <tr>
