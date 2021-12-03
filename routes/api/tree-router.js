@@ -4,7 +4,7 @@ const express = require('express');
 const { Cate } = require('../../models');
 const tree = require('../../middlewares/tree-mw');
 const { Op } = require('sequelize');
-const { findAlldId, findObj, findAllId } = require('../../modules/util');
+const { findAllId, findObj } = require('../../modules/util');
 const router = express.Router();
 const { isAdmin } = require('../../middlewares/auth-mw');
 

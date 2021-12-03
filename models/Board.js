@@ -126,23 +126,27 @@ module.exports = (sequelize, { DataTypes, Op }) => {
     return data;
   };
 
-  Board.getList = async function (id, query, BoardFile, BoardComment) {
-    let { page2 } = query;
-    let listCnt = 10;
-    let pagerCnt = 5;
-    const totalRecord = await BoardComment.count({ where: { board_id: id } });
-    const pager = createPager(page2 || 1, totalRecord, listCnt, pagerCnt);
+  Board.getList = async function (id, query, BoardFile = null, BoardComment = null) {
+    let pager = null;
+    const include = [];
+    if (BoardFile) include.push({ model: BoardFile });
+    if (BoardComment) {
+      let { page2 = 1 } = query;
+      let listCnt = 10;
+      let pagerCnt = 5;
+      let totalRecord = null;
+      totalRecord = await BoardComment.count({ where: { board_id: id } });
+      pager = createPager(page2 || 1, totalRecord, listCnt, pagerCnt);
+      include.push({
+        model: BoardComment,
+        order: [['id', 'desc']],
+        offset: pager.startIdx,
+        limit: listCnt,
+      });
+    }
     const lists = await this.findAll({
       where: { id },
-      include: [
-        { model: BoardFile },
-        {
-          model: BoardComment,
-          order: [['id', 'desc']],
-          offset: pager.startIdx,
-          limit: listCnt,
-        },
-      ],
+      include,
     });
     return { lists, pager };
   };

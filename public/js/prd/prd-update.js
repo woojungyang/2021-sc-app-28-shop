@@ -1,5 +1,3 @@
-const { alert } = require('../../../modules/util');
-
 // jsTree
 var allData = null;
 var selData = [];
@@ -24,11 +22,15 @@ core.data = {
 
 $('#jstreeWrap')
   .jstree({ core: core, plugins: plugins })
-  .on('changed.jstree', onChangeTree)
-  .on('loaded.jstree', onLoadedTree);
+  .on('loaded.jstree', onLoadedTree)
+  .on('changed.jstree', onChangeTree);
 
 function onLoadedTree(e, data) {
   allData = data.instance._model.data;
+  console.log(Object.entries(allData));
+  Object.entries(allData).forEach(function (v) {
+    v[1].state.selected = false;
+  });
   $('#jstreeWrap').jstree('check_node', cateArr);
   onCloseModal();
 }
@@ -97,9 +99,6 @@ var quill = new Quill('#editor', {
   theme: 'snow',
 });
 
-// const delta = quill.clipboard.convert(html);
-// quill.setContents(delta);
-
 $('form[name="prdCreateForm"]').submit(onSubmitPrdCreateForm);
 function onSubmitPrdCreateForm(e) {
   e.preventDefault();
@@ -122,9 +121,9 @@ function onDeleteFile(id, el) {
   function onSucess(r) {
     if (r.data.code == 200) {
       var html =
-        '<div class="file-wrap"> <input type="file" name="' +
+        '<div class="file-wrap"><input type="file" name="' +
         $(el).data('name') +
-        '" class="form-control-file mb-2" /></div>';
+        '" class="form-control-file my-2" /></div>';
       $(el).parent().after(html);
       $(el).parent().remove();
     }

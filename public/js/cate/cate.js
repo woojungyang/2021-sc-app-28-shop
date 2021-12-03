@@ -1,5 +1,13 @@
 var core = {};
-var plugins = ['contextmenu', 'dnd', 'search', 'state', 'wholerow', 'changed', 'types'];
+var plugins = [
+  'contextmenu',
+  'dnd',
+  'search',
+  'state',
+  'wholerow',
+  'changed',
+  'types',
+];
 
 var types = {
   default: {
@@ -47,7 +55,7 @@ function onDeleteTree(e, data) {
 
 function onUpdateTree() {
   axios
-    .put('/api/tree', { node: $('#jstreeWrap').jstree(true).get_json('#') })
+    .put('/api/tree', { node: $('#jstreeWrap').jstree().get_json('#') })
     .then(function (r) {
       $('#jstreeWrap').jstree().refresh();
     })
