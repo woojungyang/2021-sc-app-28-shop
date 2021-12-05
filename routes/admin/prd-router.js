@@ -1,10 +1,10 @@
 const path = require('path');
 const express = require('express');
-const _ = require('lodash');
 const router = express.Router();
 const { escape, unescape } = require('html-escaper');
 const createError = require('http-errors');
 const { error } = require('../../modules/util');
+const _ = require('lodash');
 const { Product, ProductFile, CateProduct, Cate } = require('../../models');
 const uploader = require('../../middlewares/multer-mw');
 const afterUploader = require('../../middlewares/after-multer-mw');

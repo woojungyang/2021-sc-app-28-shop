@@ -2,9 +2,9 @@ const fs = require('fs-extra');
 const path = require('path');
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    const imgs = fs.readdirSync(path.join(__dirname, '../storages/211109'));
+    const imgs = fs.readdirSync(path.join(__dirname, '../storages/211205'));
     imgs.splice(imgs.indexOf('thumb'), 1);
-    const details = fs.readdirSync(path.join(__dirname, '../storages/211110'));
+    const details = fs.readdirSync(path.join(__dirname, '../storages/211205'));
     details.splice(details.indexOf('thumb'), 1);
     const insertFile = [];
     for (let i = 1; i <= 100; i++) {

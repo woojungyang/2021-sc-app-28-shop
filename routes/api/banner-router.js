@@ -9,7 +9,7 @@ const boardInit = require('../../middlewares/boardinit-mw');
 router.get(
   '/',
   (req, res, next) => {
-    req.boardId = 5;
+    req.boardId = 3;
     next();
   },
   boardInit(),
