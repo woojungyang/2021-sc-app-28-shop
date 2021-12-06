@@ -1,9 +1,9 @@
 const _ = require('lodash');
 const numeral = require('numeral');
-const { dateFormat, relPath, relThumbPath } = require('../modules/util');
-const { findLastId, findObj, findAllId, findChildId } = require('../modules/util');
-const createPager = require('../modules/pager-init');
 const { unescape } = require('html-escaper');
+const { dateFormat, relPath, relThumbPath } = require('../modules/util');
+const createPager = require('../modules/pager-init');
+const { findLastId, findObj, findAllId, findChildId } = require('../modules/util');
 
 module.exports = (sequelize, { DataTypes, Op }) => {
   const Product = sequelize.define(
@@ -93,8 +93,8 @@ module.exports = (sequelize, { DataTypes, Op }) => {
       const [allTree] = await Cate.getAllCate();
       const myTree = findObj(allTree, cid);
       const lastTree = findLastId(myTree, []);
-      //pager
-      let listCnt = 10;
+      // pager
+      let listCnt = 15;
       let pagerCnt = 5;
       const totalRecord = await this.getCount(query);
       const pager = createPager(page, totalRecord, listCnt, pagerCnt);

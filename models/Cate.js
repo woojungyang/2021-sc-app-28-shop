@@ -2,7 +2,6 @@ const _ = require('lodash');
 const fs = require('fs-extra');
 const path = require('path');
 const { findObj, findChildId } = require('../modules/util');
-const { dateFormat, relPath } = require('../modules/util');
 
 module.exports = (sequelize, { DataTypes, Op }) => {
   const Cate = sequelize.define(
