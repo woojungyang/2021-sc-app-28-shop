@@ -1,6 +1,7 @@
 const _ = require('lodash');
 const numeral = require('numeral');
 const { dateFormat, relPath, relThumbPath } = require('../modules/util');
+const { findLastId, findObj, findAllId, findChildId } = require('../modules/util');
 const createPager = require('../modules/pager-init');
 const { unescape } = require('html-escaper');
 
@@ -83,6 +84,57 @@ module.exports = (sequelize, { DataTypes, Op }) => {
     return await this.count({
       where: sequelize.getWhere(query),
     });
+  };
+
+  Product.findProducts = async function (query, Cate, ProductFile) {
+    try {
+      let { field, sort, page = 1, search, grp, cid = 'j1_1' } = query;
+      // tree
+      const [allTree] = await Cate.getAllCate();
+      const myTree = findObj(allTree, cid);
+      const lastTree = findLastId(myTree, []);
+      //pager
+      let listCnt = 10;
+      let pagerCnt = 5;
+      const totalRecord = await this.getCount(query);
+      const pager = createPager(page, totalRecord, listCnt, pagerCnt);
+
+      const rs = await Product.findAll({
+        where: sequelize.getWhere(query, '2'),
+        offset: pager.startIdx,
+        limit: pager.listCnt,
+        attributes: [
+          'id',
+          'title',
+          'priceOrigin',
+          'priceSale',
+          'amount',
+          'status',
+          'summary',
+          'readCounter',
+        ],
+        include: [
+          {
+            model: Cate,
+            through: { attributes: [] },
+            attributes: [['id', 'cid']],
+            where: { id: { [Op.or]: [...lastTree] } },
+            order: [[field, sort]],
+          },
+          {
+            model: ProductFile,
+            attributes: ['id', 'saveName', 'fileType', 'fieldNum'],
+            order: [
+              [ProductFile, 'fileType', 'ASC'],
+              [ProductFile, 'fieldNum', 'ASC'],
+            ],
+          },
+        ],
+      });
+      return rs;
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   Product.findProduct = async function (id, Cate, ProductFile) {

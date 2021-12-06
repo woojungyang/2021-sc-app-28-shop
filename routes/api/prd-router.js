@@ -2,13 +2,12 @@ const express = require('express');
 const router = express.Router();
 
 const queries = require('../../middlewares/query-mw');
-const { Product, ProductFile, CateProduct, Cate } = require('../../models');
-const { findLastId } = require('../../modules/util');
+const { Product, ProductFile, Cate } = require('../../models');
 
 // 리스트
 router.get('/', queries(), async (req, res, next) => {
   try {
-    const rs = await Cate.getProduct(req.query, Product, ProductFile);
+    const rs = await Product.findProducts(req.query, Cate, ProductFile);
     res.status(200).json(rs);
   } catch (err) {
     res.status(500).json(err);

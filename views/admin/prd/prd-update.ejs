@@ -87,9 +87,14 @@
           <td>
             <% for(let i=1; i<=5; i++) { %>
               <div class="file-wrap">
-                <% let idx = _.findIndex(prd.imgs, v => v.fieldNum == i && v.type == 'I') %>
+           <% let idx = _.findIndex(prd.imgs, v => v.fieldNum == i && v.type == 'I') %>
                 <% if(idx > -1) { %>
-                  <% let { thumbSrc, name, id, type, fieldNum } = prd.imgs[idx]; %>
+                  <% 
+                    let { thumbSrc, name, id, type, fieldNum } = prd.imgs[idx]; 
+                    if(thumbSrc.includes('.mp4')) {
+                      thumbSrc = thumbSrc.replace('mp4', 'jpg');
+                    }
+                  %>
                   <img src="<%= thumbSrc %>" alt="<%= name %>" class="img">
                   <div class="file"><%= name %></div>
                   <button type="button" data-name="img_<%= i %>" class="btn btn-sm btn-danger" data-idx="<%= id %>"
