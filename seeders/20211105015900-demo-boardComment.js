@@ -3,12 +3,12 @@ const path = require('path');
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     const comments = [
-      '너무 너무 좋아요~',
-      '짱 입니다.!!!!!',
-      '긁어다 붙이는거 아님!!',
-      '테스트 댓글 입니다.',
-      '뭐라고 하는게 좋을까요? ~~~~',
-      'ㅎㅎㅎ',
+      `Out of the water, I am nothing`,
+      `My passion for surfing was more than my fear of sharks`,
+      `I'm just a surfer who wanted to build something that would allow me to surf longer`,
+      `If you're having a bad day, catch a wave`,
+      'Never drive away from good surf.',
+      `Foam is your friend. Don't be scared of it. A little bit of extra foam here and there is good for the soul and your surfing.`,
     ];
     const insertComment = [];
     for (let i = 1; i <= 240; i++) {
@@ -17,7 +17,7 @@ module.exports = {
         insertComment.push({
           board_id: i,
           user_id: (i % 100) + 1,
-          writer: '데모 유저' + i,
+          writer: 'demouser' + i,
           comment: comments[Math.floor(Math.random() * 6)],
           createdAt: new Date(),
           updatedAt: new Date(),

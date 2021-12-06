@@ -20,7 +20,7 @@ module.exports = (sequelize, { DataTypes, Op }) => {
       charset: 'utf8',
       collate: 'utf8_general_ci',
       tableName: 'cate',
-      paranoid: true,
+      paranoid: false,
     }
   );
 

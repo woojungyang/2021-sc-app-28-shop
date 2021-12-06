@@ -1,15 +1,18 @@
 const axios = require('axios');
 const titles = [
-  '좋은 상품',
-  '질 좋고 저렴한 상품',
-  '우아한 상품',
-  '이쁘게 코디할 수 있는 상품',
-  '보통 상품',
+  `Surfing's one of the few sports that you look ahead to see what's behind.`,
+  `A big wave is like a beautiful woman, exciting to look at and thrilling to ride.`,
+  `The biggest sin in the world would be if I lost my love for the ocean.`,
+  `There is no one right way to ride a wave.`,
+  `There are a million ways to surf, and as long as you're smiling, you're doing it right.`,
+  `Wiping out is an underappreciated skill`,
 ];
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     const products = [];
-    const { data: posts } = await axios.get('https://jsonplaceholder.typicode.com/posts');
+    const { data: posts } = await axios.get(
+      'https://jsonplaceholder.typicode.com/posts'
+    );
     for (let i = 0; i < posts.length; i++) {
       if (i % 3 === 0) {
         posts[i].body = '&lt;h2&gt;' + posts[i].body + '&lt;/h2&gt;';

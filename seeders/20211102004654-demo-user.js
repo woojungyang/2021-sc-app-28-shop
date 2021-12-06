@@ -22,7 +22,7 @@ module.exports = {
     insertUsers.push({
       userid: 'demoUser',
       userpw: await bcrypt.hash('111111' + salt, Number(round)),
-      username: '데모관리자',
+      username: 'demouser',
       email: 'demoUser@gmail.com',
       tel: '010-1234-5678',
       addrPost: '12345',
@@ -36,9 +36,9 @@ module.exports = {
     });
     for (let i = 0; i < 99; i++) {
       insertUsers.push({
-        userid: 'test' + i,
+        userid: 'Test' + i,
         userpw: await bcrypt.hash('111111' + salt, Number(round)),
-        username: '테스트유저' + i,
+        username: 'testuser' + i,
         email: 'test' + i + '@test.com',
         tel: `010-7777-${numeral(i).format('0000')}`,
         addrPost: String(10000 + i),
