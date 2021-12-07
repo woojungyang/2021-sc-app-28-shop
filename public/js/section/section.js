@@ -6,14 +6,21 @@ function onColorReset(el) {
   var color = $(el.form.defaultColor).val();
   var name = $(el.form.defaultName).val();
   changeColor(color, el);
-  $(el.form.code).val(color);
+  $(el.form.color).val(color);
   $(el.form.name).val(name);
+  $(el.form).find('.tag').text(name);
+}
+
+function onTxtChange(el) {
+  var txt = el.value;
+  $(el.form).find('.tag').text(txt);
 }
 
 function changeColor(color, el) {
-  $(el.form).find('.color-wrap .circle').css('background-color', color);
-  $(el.form).find('.color-wrap .hexa-code').css('color', color);
-  $(el.form).find('.color-wrap .hexa-code').text(color);
+  var hslColor = hexToHSL(color);
+  var txtColor = hslColor.l > 0.5 ? '#000000' : '#ffffff';
+  $(el.form).find('.tag').css('background-color', color);
+  $(el.form).find('.tag').css('color', txtColor);
 }
 
 function onSubmit(el) {

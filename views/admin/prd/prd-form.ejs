@@ -20,6 +20,19 @@
         </tr>
         <tr>
           <td class="title" style="width: 15%;">
+            분류 등록
+          </td>
+          <td class="content section-wrap">
+            <% for(let v of sections) { %>
+            <label>
+              <input type="checkbox" name="section[]" value="<%= v.id %>">
+              <div class="box" style="<%= v.style %>"><%= v.name %></div>
+            </label>
+            <% } %>
+          </td>
+        </tr>
+        <tr>
+          <td class="title" style="width: 15%;">
             상품명
             <span class="red">*</span>
           </td>
@@ -60,6 +73,19 @@
           <td class="content">
             <input type="number" name="amount" class="form-control small" placeholder="재고량" value="-1">
             <div class="red">* -1을 입력하면 재고량 파악을 하지 않습니다(무제한)</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="title" style="width: 15%;">
+            컬러 등록
+          </td>
+          <td class="content color-wrap">
+            <% for(let v of colors) { %>
+            <label>
+              <input type="checkbox" name="color[]" value="<%= v.id %>">
+              <div class="circle" style="<%= v.style %>"></div>
+            </label>
+            <% } %>
           </td>
         </tr>
         <tr>

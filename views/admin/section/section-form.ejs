@@ -1,18 +1,16 @@
 <li class="list">
   <form action="/<%= currents[0] %>/<%= currents[1] %>" method="POST">
     <input type="hidden" name="defaultColor" value="<%= color %>">
+    <input type="hidden" name="defaultTxtColor" value="<%= txtColor %>">
     <input type="hidden" name="defaultName" value="<%= name %>">
     <% if(id && id !== '') { %>
       <input type="hidden" name="_method" value="<%= method %>">
       <input type="hidden" name="id" value="<%= id %>">
     <% } %>
-    <div class="color-wrap">
-      <div class="circle"></div>
-      <div class="hexa-code"><%= color %></div>
-    </div>
+    <div class="tag"><%= name %></div>
     <div class="input-wrap">
-      <input type="text" name="name" class="form-control form-control-sm" placeholder="컬러명" value="<%= name %>">
-      <input type="color" name="code" value="<%= color %>" onchange="onColorChange(this);">
+      <input type="text" name="name" class="form-control form-control-sm" placeholder="분류명" value="<%= name %>" onkeyup="onTxtChange(this);">
+      <input type="color" name="color" value="<%= color %>" onchange="onColorChange(this);">
     </div>
     <div class="btn-wrap">
       <button type="button" class="btn btn-sm btn-dark" onclick="onSubmit(this);">

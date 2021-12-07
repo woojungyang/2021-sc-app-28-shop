@@ -157,11 +157,30 @@ module.exports = (sequelize, { DataTypes, Op }) => {
     }
   };
 
-  Product.findProduct = async function (id, Cate, ProductFile) {
+  Product.findProduct = async function (id, { Cate, ProductFile, Color, Section }) {
     const rs = await this.findOne({
       where: { id },
       order: [[ProductFile, 'id', 'asc']],
-      include: [{ model: Cate }, { model: ProductFile }],
+      include: [
+        { model: Cate },
+        {
+          model: ProductFile,
+        },
+        {
+          model: Color,
+          attributes: ['id'],
+          through: {
+            attributes: [],
+          },
+        },
+        {
+          model: Section,
+          attributes: ['id'],
+          through: {
+            attributes: [],
+          },
+        },
+      ],
     });
     const data = rs.toJSON();
     data.updatedAt = dateFormat(data.updatedAt, 'H');

@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const createError = require('http-errors');
 const { Color } = require('../../models');
+const { isAdmin } = require('../../middlewares/auth-mw');
 
 router.get('/', async (req, res, next) => {
   try {
@@ -11,10 +12,8 @@ router.get('/', async (req, res, next) => {
       order: [['id', 'desc']],
     });
     res.render('admin/color/color-list.ejs', { list });
-    // res.status(200).json({ list });
   } catch (err) {
     next(createError(err));
-    console.log(err);
   }
 });
 
@@ -27,7 +26,7 @@ router.post('/', async (req, res, next) => {
   }
 });
 
-router.put('/', async (req, res, next) => {
+router.put('/', isAdmin(8), async (req, res, next) => {
   try {
     await Color.update(req.body, { where: { id: req.body.id } });
     res.redirect('/admin/color');
@@ -36,9 +35,10 @@ router.put('/', async (req, res, next) => {
   }
 });
 
-router.delete('/', async (req, res, next) => {
+router.delete('/', isAdmin(8), async (req, res, next) => {
   try {
-    res.send('...');
+    await Color.destroy({ where: { id: req.body.id } });
+    res.redirect('/admin/color');
   } catch (err) {
     next(createError(err));
   }
