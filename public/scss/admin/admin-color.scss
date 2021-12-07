@@ -1,0 +1,40 @@
+@import '../common';
+
+.color-wrapper {
+  > ul {
+    @include flex($v: stretch);
+    .list {
+      width: 24%;
+      border: 1px solid #ccc;
+      margin: 0.5%;
+      padding: 1em;
+      form {
+        @include flex($v: center, $h: center);
+        @include flexCol;
+        .color-wrap {
+          width: 100%;
+          @include flex($h: space-evenly, $v: center);
+          .circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin: 1em 0;
+            background-color: #333;
+          }
+          .hexa-code {
+            color: #333;
+            font-size: 1.25em;
+          }
+        }
+        .input-wrap {
+          @include flex($v: center);
+          margin-bottom: 1em;
+          input[name='name'] {
+            flex-grow: 1;
+            margin-right: 1em;
+          }
+        }
+      }
+    }
+  }
+}

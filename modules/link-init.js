@@ -42,10 +42,26 @@ module.exports = {
     prd: [
       { path: '/admin/prd', name: '상품 관리' },
       { path: '/admin/cate', name: '카테고리 관리' },
+      { path: '/admin/section', name: '상품 분류 관리' },
+      { path: '/admin/color', name: '제품 색상 관리' },
     ],
     cate: [
       { path: '/admin/prd', name: '상품 관리' },
       { path: '/admin/cate', name: '카테고리 관리' },
+      { path: '/admin/section', name: '상품 분류 관리' },
+      { path: '/admin/color', name: '제품 색상 관리' },
+    ],
+    section: [
+      { path: '/admin/prd', name: '상품 관리' },
+      { path: '/admin/cate', name: '카테고리 관리' },
+      { path: '/admin/section', name: '상품 분류 관리' },
+      { path: '/admin/color', name: '제품 색상 관리' },
+    ],
+    color: [
+      { path: '/admin/prd', name: '상품 관리' },
+      { path: '/admin/cate', name: '카테고리 관리' },
+      { path: '/admin/section', name: '상품 분류 관리' },
+      { path: '/admin/color', name: '제품 색상 관리' },
     ],
     binit: [
       { path: '/admin/binit', name: '게시판 관리' },

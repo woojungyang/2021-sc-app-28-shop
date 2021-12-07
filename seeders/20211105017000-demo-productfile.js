@@ -7,6 +7,7 @@ module.exports = {
     const videos = fs.readdirSync(path.join(__dirname, '../storages/201208'));
     imgs.splice(imgs.indexOf('thumb'), 1);
     details.splice(details.indexOf('thumb'), 1);
+    videos.splice(videos.indexOf('thumb'), 1);
     const insertFile = [];
     for (let i = 1; i <= 1000; i++) {
       for (let j = 1; j <= 5; j++) {

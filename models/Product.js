@@ -47,6 +47,10 @@ module.exports = (sequelize, { DataTypes, Op }) => {
         type: DataTypes.TEXT,
         allowNull: true,
       },
+      start: {
+        type: DataTypes.DECIMAL(1, 1),
+        allowNull: true,
+      },
       readCounter: {
         type: DataTypes.INTEGER(10).UNSIGNED,
         defaultValue: 0,
@@ -75,6 +79,22 @@ module.exports = (sequelize, { DataTypes, Op }) => {
         name: 'prd_id',
       },
       through: 'cate_product',
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
+    });
+    Product.belongsToMany(models.Color, {
+      foreignKey: {
+        name: 'prd_id',
+      },
+      through: 'color_product',
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
+    });
+    Product.belongsToMany(models.Section, {
+      foreignKey: {
+        name: 'prd_id',
+      },
+      through: 'section_product',
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE',
     });
@@ -219,31 +239,3 @@ module.exports = (sequelize, { DataTypes, Op }) => {
 
   return Product;
 };
-/* 
-* JSON.stringify() 메소드
-JSON.stringify() 메소드는 인수로 전달받은 자바스크립트 객체를 문자열로 변환하여 반환합니다.
-
-ex) JSON.stringify(value)
-value에는 변환할 자바스크립트 객체를 전달합니다.
-
-* JSON.parse() 메소드
-JSON.parse() 메소드는 JSON.stringify() 메소드와는 반대로 인수로 전달받은 문자열을 자바스크립트 객체로 변환하여 반환합니다.
-
-ex) JSON.parse(text)
-
-text에는 변환할 문자열을 전달합니다.
-이때 해당 문자열은 반드시 유효한 JSON 형식의 문자열이어야 합니다.
-
-toJSON() 메소드
-자바스크립트의 toJSON() 메소드는 자바스크립트의 Date 객체의 데이터를 JSON 형식의 문자열로 변환하여 반환합니다.
-
-따라서 이 메소드는 Date.prototype 객체에서만 사용할 수 있습니다.
-
-
-* toJSON() 메소드
-접미사 Z로 식별되는 UTC 표준 시간대의 날짜를 ISO 8601 형식의 문자열로 반환합니다.
-따라서 이 문자열은 언제나 24개나 27개의 문자로 이루어지며, 다음과 같은 형식을 따릅니다.
-
-ex) YYYY-MM-DDTHH:mm:ss.sssZ / ±YYYYYY-MM-DDTHH:mm:ss.sssZ
-
-*/
