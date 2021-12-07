@@ -47,7 +47,7 @@ module.exports = (sequelize, { DataTypes, Op }) => {
         type: DataTypes.TEXT,
         allowNull: true,
       },
-      start: {
+      stars: {
         type: DataTypes.DECIMAL(1, 1),
         allowNull: true,
       },

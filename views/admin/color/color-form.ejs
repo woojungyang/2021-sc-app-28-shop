@@ -1,0 +1,26 @@
+<li class="list">
+  <form action="/<%= currents[0] %>/<%= currents[1] %>" method="<%= method %>">
+    <input type="hidden" name="defaultColor" value="<%= color %>">
+    <% if(id && id !== '') { %>
+      <input type="hidden" name="id" value="<%= id %>">
+      <input type="hidden" name="defaultName" value="<%= name %>">
+    <% } %>
+    <div class="color-wrap">
+      <div class="circle"></div>
+      <div class="hexa-code"><%= color %></div>
+    </div>
+    <div class="input-wrap">
+      <input type="text" name="name" class="form-control form-control-sm" placeholder="컬러명" value="<%= name %>" >
+      <input type="color" name="code" value="<%= color %>" onchange="onColorChange(this);">
+    </div>
+    <div class="btn-wrap">
+      <button type="button" class="btn btn-sm btn-dark" onclick="onSubmit(this);">
+        <%= id === '' ? '등록' : '수정' %>
+      </button>
+      <% if(id !== '') { %>
+        <button type="button" class="btn btn-sm btn-secondary">삭제</button>
+      <% } %>
+      <button type="button" class="btn btn-sm btn-secondary bt-reset" onclick="onColorReset(this);">리셋</button>
+    </div>
+  </form>
+</li>

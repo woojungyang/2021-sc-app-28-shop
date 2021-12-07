@@ -2,7 +2,8 @@
 
 .color-wrapper {
   > ul {
-    @include flex($v: stretch);
+    @include flex($v: stretch, $w: wrap);
+
     .list {
       width: 24%;
       border: 1px solid #ccc;

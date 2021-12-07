@@ -3,26 +3,14 @@
 <link rel="stylesheet" href="/css/admin-color.css">
 <section class="color-wrapper list-wrapper wrapper">
   <ul>
-    <li class="list">
-      <form action="/<%= currents[0] %>/<%= currents[1] %>" method="POST">
-        <input type="hidden" name="defaultColor" value="#333333">
-        <div class="color-wrap">
-          <div class="circle"></div>
-          <div class="hexa-code">#333333</div>
-
-        </div>
-        <div class="input-wrap">
-          <input type="text" name="name" class="form-control form-control-sm" placeholder="컬러명">
-          <input type="color" name="code"value="#333333" onchange="onColorChange(this);">
-        </div>
-        <div class="btn-wrap">
-          <button type="button" class="btn btn-sm btn-dark">수정</button>
-          <button type="button" class="btn btn-sm btn-secondary">삭제</button>
-          <button type="reset" class="btn btn-sm btn-secondary"onchange="onColorReset(this);">리셋</button>
-        </div>
-      </form>
-    </li>
+    <%- include('./color-form.ejs', { color: '#333333', method: 'POST', id: '',name:""}) %>
+    <% 
+      for(let v of list) { 
+        let value = {color: v.code, method: 'PUT', id: v.id, name:v.name }
+    %>
+      <%- include('./color-form.ejs', value) %>
+    <% } %>
   </ul>
-</section>
+</section> 
 <script src="/js/color/color.js"></script>
 <%- include('../../inc/foot.ejs') %>
