@@ -25,6 +25,19 @@
         </tr>
         <tr>
           <td class="title" style="width: 15%;">
+            분류 등록
+          </td>
+          <td class="content section-wrap">
+            <% for(let v of sections) { %>
+            <label>
+              <input type="checkbox" name="section[]" value="<%= v.id %>" <%= v.checked ? 'checked' : '' %>>
+              <div class="box" style="<%= v.style %>"><%= v.name %></div>
+            </label>
+            <% } %>
+          </td>
+        </tr>
+        <tr>
+          <td class="title" style="width: 15%;">
             상품명
             <span class="red">*</span>
           </td>
@@ -70,6 +83,19 @@
           </td>
         </tr>
         <tr>
+          <td class="title" style="width: 15%;">
+            컬러 등록
+          </td>
+          <td class="content color-wrap">
+            <% for(let v of colors) { %>
+            <label>
+              <input type="checkbox" name="color[]" value="<%= v.id %>" <%= v.checked ? 'checked' : '' %>>
+              <div class="circle" style="<%= v.style %>"></div>
+            </label>
+            <% } %>
+          </td>
+        </tr>
+        <tr>
           <td class="title">요약설명</td>
           <td>
             <textarea name="summary" class="form-control" placeholder="내용을 입력하세요."
@@ -87,7 +113,7 @@
           <td>
             <% for(let i=1; i<=5; i++) { %>
               <div class="file-wrap">
-           <% let idx = _.findIndex(prd.imgs, v => v.fieldNum == i && v.type == 'I') %>
+                <% let idx = _.findIndex(prd.imgs, v => v.fieldNum == i && v.type == 'I') %>
                 <% if(idx > -1) { %>
                   <% 
                     let { thumbSrc, name, id, type, fieldNum } = prd.imgs[idx]; 

@@ -6,7 +6,7 @@ module.exports = {
     const color = fs.readJsonSync(path.join(__dirname, '../json/color.json'));
     var code = Object.keys(color);
     var name = Object.values(color);
-    for (let i = 1; i <= 200; i++) {
+    for (let i = 1; i <= 50; i++) {
       insertColor.push({
         id: i,
         name: name[i],

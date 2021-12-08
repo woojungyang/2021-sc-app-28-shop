@@ -29,6 +29,7 @@ module.exports = (sequelize, { DataTypes, Op }) => {
         name: 'cate_id',
       },
       sourceKey: 'id',
+      through: 'cate_product',
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE',
     });
