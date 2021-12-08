@@ -24,8 +24,14 @@ core.data = {
 };
 
 function onCreateTree(e, data) {
+  let parents = data.node.parents;
+  parents.pop();
   axios
-    .post('/api/tree', { id: data.node.id })
+    .post('/api/tree', {
+      id: data.node.id,
+      name: data.node.text,
+      parents: parents.join(','),
+    })
     .then(onUpdateTree)
     .catch(function (err) {
       console.log(err);
@@ -41,6 +47,7 @@ function onDeleteTree(e, data) {
     });
 }
 
+// json 교체 - 공통모듈
 function onUpdateTree() {
   axios
     .put('/api/tree', { node: $('#jstreeWrap').jstree().get_json('#') })
@@ -52,14 +59,20 @@ function onUpdateTree() {
     });
 }
 
-function onRenameTree(e, data) {
+function onChangeTree(e, data) {
+  // DB 교체
   data.node.state.selected = false;
-  onUpdateTree();
+  axios
+    .put('/api/tree/' + data.node.id, { data: data.node })
+    .then(onUpdateTree)
+    .catch(function (err) {
+      console.log(err);
+    });
 }
 
 $('#jstreeWrap')
   .jstree({ core: core, plugins: plugins, types })
   .on('create_node.jstree', onCreateTree)
-  .on('rename_node.jstree', onRenameTree)
-  .on('move_node.jstree', onUpdateTree)
+  .on('rename_node.jstree', onChangeTree)
+  .on('move_node.jstree', onChangeTree)
   .on('delete_node.jstree', onDeleteTree);
