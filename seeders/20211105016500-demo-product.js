@@ -10,10 +10,13 @@ module.exports = {
       if (j % 3 === 0) {
         posts[j].body = '&lt;h2&gt;' + posts[j].body + '&lt;/h2&gt;';
       }
+      let price = String(Math.floor(Math.random() * 90000) + 3000);
+      price = Number(price.substr(0, price.length - 2) + '00');
+      let priceSale = (price * (Math.floor(Math.random() * 3) + 7)) / 10;
       products.push({
         title: posts[j].title.split(' ')[0] + ' ' + posts[j].title.split(' ')[1],
-        priceOrigin: Math.floor(Math.random() * 300000) + 30000,
-        priceSale: Math.floor(Math.random() * 300000) + 30000,
+        priceOrigin: price,
+        priceSale: priceSale,
         summary: posts[j].title,
         content: posts[j].body,
         amount: j % 20 === 0 ? 0 : Math.floor(Math.random() * 1000),

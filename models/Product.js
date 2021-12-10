@@ -111,7 +111,7 @@ module.exports = (sequelize, { DataTypes, Op }) => {
     { Cate, Color, Section, ProductFile }
   ) {
     try {
-      let { field, sort, page = 1, search, grp, cid = 'j1_1' } = query;
+      let { field, sort, page = 1, search, cid = 'j1_1' } = query;
       // tree
       const [allTree] = await Cate.getAllCate();
       const myTree = findObj(allTree, cid);
@@ -124,6 +124,7 @@ module.exports = (sequelize, { DataTypes, Op }) => {
 
       const rs = await Product.findAll({
         where: sequelize.getWhere(query, '2'),
+        // where: { '$Sections.name$': 'New' },
         offset: pager.startIdx,
         limit: pager.listCnt,
         attributes: [
@@ -132,6 +133,7 @@ module.exports = (sequelize, { DataTypes, Op }) => {
           'priceOrigin',
           'priceSale',
           'amount',
+          'star',
           'status',
           'summary',
           'readCounter',
