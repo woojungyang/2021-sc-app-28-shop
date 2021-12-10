@@ -124,7 +124,6 @@ module.exports = (sequelize, { DataTypes, Op }) => {
 
       const rs = await Product.findAll({
         where: sequelize.getWhere(query, '2'),
-        // where: { '$Sections.name$': 'New' },
         offset: pager.startIdx,
         limit: pager.listCnt,
         attributes: [
