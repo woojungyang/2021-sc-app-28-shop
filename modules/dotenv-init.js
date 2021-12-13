@@ -6,7 +6,7 @@ module.exports = () => {
     path: path.join(
       __dirname,
       '../',
-      NODE_ENV === 'production' ? 'production' : 'development'
+      NODE_ENV === 'production' ? '.env.production' : '.env.development'
     ),
   });
 };

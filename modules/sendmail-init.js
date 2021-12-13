@@ -1,17 +1,16 @@
 const nodemailer = require('nodemailer');
-var smtpPool = require('nodemailer-smtp-pool');
 
 module.exports = async (email) => {
   try {
     const transporter = nodemailer.createTransport({
-      // MAIL_HOST=smtp.kakao.com
-      // MAIL_PORT=465
-      // MAIL_USER=booldook@kakao.com
+      // MAIL_HOST=smtp.naver.com
+      // MAIL_PORT=587
+      // MAIL_USER=booldook@naver.com
       // MAIL_PASS=
-      service: 'Kakao',
+      service: 'Naver',
       host: process.env.MAIL_HOST,
       port: Number(process.env.MAIL_PORT),
-      secure: true,
+      // secure: true,
       // requireTLS: true,
       auth: {
         user: process.env.MAIL_USER,
@@ -20,7 +19,7 @@ module.exports = async (email) => {
     });
     const mailContent = {
       from: process.env.MAIL_USER,
-      to: email,
+      to: process.env.MAIL_USER,
       subject: '쇼핑몰 이메일 뉴스레터 신청',
       html: `
         <h1>뉴스레터 신청입니다.</h1>
