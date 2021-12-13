@@ -1,6 +1,6 @@
-.env.dev
-.env.pro
-.storage
+.env.development
+.env.production
+.storages
 
 # Logs
 logs
