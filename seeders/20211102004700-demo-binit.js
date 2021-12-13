@@ -22,18 +22,18 @@ module.exports = {
     insertBinit.push({
       title: '배너관리',
       boardType: 'gallery',
-      useImg: '5',
-      useFile: '1',
-      useComment: '1',
+      useImg: '10',
+      useFile: '0',
+      useComment: 0,
       createdAt: new Date(),
       updatedAt: new Date(),
     });
     insertBinit.push({
       title: '관계사링크',
-      boardType: 'default',
-      useImg: '5',
-      useFile: '1',
-      useComment: '1',
+      boardType: 'gallery',
+      useImg: '1',
+      useFile: '0',
+      useComment: 0,
       createdAt: new Date(),
       updatedAt: new Date(),
     });

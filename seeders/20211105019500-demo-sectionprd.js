@@ -7,7 +7,7 @@ module.exports = {
     const insertSectionPrd = [];
     const rs = await Section.findAll();
     const sections = rs.map((v) => v.id);
-    for (let i = 1; i <= 1000; i++) {
+    for (let i = 1; i <= 100; i++) {
       let section = _.shuffle(sections);
       let len = Math.floor(Math.random() * section.length);
       for (let j = 0; j < len; j++) {
