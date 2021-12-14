@@ -7,9 +7,9 @@ module.exports = {
     const insertColorPrd = [];
     const rs = await Color.findAll();
     const colors = rs.map((v) => v.id);
-    for (let i = 1; i <= 1000; i++) {
+    for (let i = 1; i <= 10; i++) {
       let color = _.shuffle(colors);
-      let len = Math.floor(Math.random() * 10);
+      let len = Math.floor(Math.random() * color.length);
       for (let j = 0; j < len; j++) {
         insertColorPrd.push({
           prd_id: i,

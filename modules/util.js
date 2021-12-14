@@ -165,7 +165,7 @@ function findChildId(_obj) {
 
 // _obj의 자손들중 Endpoint id를 리턴하는 재귀함수
 function findLastId(_obj, arr) {
-  if (_obj.children && _obj.children.length) {
+  if (_obj.children.length) {
     for (let v of _obj.children) {
       findLastId(v, arr);
     }
@@ -186,13 +186,26 @@ function findAllId(_obj, arr) {
   return arr;
 }
 
+// _obj의 자식들의 값을 리턴하는 재귀함수2
+function findAllId2(_obj, arr) {
+  if (_obj.children) {
+    for (let v of _obj.children) {
+      findAllId2(v, arr);
+    }
+  }
+  arr.push({ id: _obj.id, name: _obj.text });
+  return arr;
+}
+
 module.exports = {
   location,
   cutTail,
   chgStatus,
   exts,
   relPath,
+  relThumbPath,
   absPath,
+  absThumbPath,
   getIcon,
   isImg,
   moveFile,
@@ -204,7 +217,6 @@ module.exports = {
   findLastId,
   findChildId,
   findAllId,
+  findAllId2,
   findObj,
-  absThumbPath,
-  relThumbPath,
 };

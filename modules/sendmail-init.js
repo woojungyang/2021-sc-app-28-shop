@@ -3,11 +3,7 @@ const nodemailer = require('nodemailer');
 module.exports = async (email) => {
   try {
     const transporter = nodemailer.createTransport({
-      // MAIL_HOST=smtp.naver.com
-      // MAIL_PORT=587
-      // MAIL_USER=booldook@naver.com
-      // MAIL_PASS=
-      service: 'Naver',
+      service: 'Kakao',
       host: process.env.MAIL_HOST,
       port: Number(process.env.MAIL_PORT),
       // secure: true,
@@ -19,7 +15,7 @@ module.exports = async (email) => {
     });
     const mailContent = {
       from: process.env.MAIL_USER,
-      to: process.env.MAIL_USER,
+      to: email,
       subject: '쇼핑몰 이메일 뉴스레터 신청',
       html: `
         <h1>뉴스레터 신청입니다.</h1>

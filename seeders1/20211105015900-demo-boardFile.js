@@ -41,7 +41,7 @@ module.exports = {
       insertFile.push({
         board_id: 241,
         oriName: '메인배너' + i + '.jpg',
-        saveName: '../storages/201209/201209_main' + i + '.jpg',
+        saveName: '201209_main' + i + '.jpg',
         mimeType: 'image/jpg',
         fileType: 'I',
         size: 12369,
@@ -52,7 +52,7 @@ module.exports = {
     insertFile.push({
       board_id: 242,
       oriName: '패럴렉스배너.jpg',
-      saveName: '../storages/201209/201209_parallax.jpg',
+      saveName: '201209_parallax.jpg',
       mimeType: 'image/jpg',
       fileType: 'I',
       size: 12369,
@@ -62,7 +62,7 @@ module.exports = {
     insertFile.push({
       board_id: 243,
       oriName: '하단배너.jpg',
-      saveName: '../storages/201210/201210_243.png',
+      saveName: '201210_243.png',
       mimeType: 'image/jpg',
       fileType: 'I',
       size: 12369,
@@ -73,7 +73,7 @@ module.exports = {
       insertFile.push({
         board_id: 244,
         oriName: 'ride' + i + '.jpg',
-        saveName: '../storages/211207/211207_244-0' + i + '.jpg',
+        saveName: '211207_244-0' + i + '.jpg',
         mimeType: 'image/jpg',
         fileType: 'I',
         size: 12369,
@@ -85,7 +85,19 @@ module.exports = {
       insertFile.push({
         board_id: 245,
         oriName: 'insta' + i + '.jpg',
-        saveName: '../storages/201210/201210_245-0' + i + '.jpg',
+        saveName: '201210_245-0' + i + '.jpg',
+        mimeType: 'image/jpg',
+        fileType: 'I',
+        size: 12369,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+    }
+    for (let i = 246, j = 1; i <= 255; i++, j++) {
+      insertFile.push({
+        board_id: i,
+        oriName: 'brand' + i + '.jpg',
+        saveName: '201204_' + (j < 10 ? '0' + j : j) + '.jpg',
         mimeType: 'image/jpg',
         fileType: 'I',
         size: 12369,

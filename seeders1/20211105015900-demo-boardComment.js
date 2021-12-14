@@ -16,7 +16,7 @@ module.exports = {
       for (let j = 0; j < limitJ; j++) {
         insertComment.push({
           board_id: i,
-          user_id: (i % 100) + 1,
+          user_id: (i % 45) + 1,
           writer: 'demouser' + i,
           comment: comments[Math.floor(Math.random() * 6)],
           createdAt: new Date(),
