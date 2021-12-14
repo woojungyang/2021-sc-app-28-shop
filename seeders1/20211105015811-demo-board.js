@@ -28,7 +28,7 @@ module.exports = {
     }
     insertGallery.push({
       // 241
-      binit_id: 3,
+      binit_id: 4,
       user_id: 1,
       title: '메인 상단 배너 입니다. ',
       writer: '최고관리자',
@@ -39,7 +39,7 @@ module.exports = {
     });
     insertGallery.push({
       // 242
-      binit_id: 3,
+      binit_id: 4,
       user_id: 1,
       title: '메인 패럴렉스 이미지 입니다. ',
       writer: '최고관리자',
@@ -50,7 +50,7 @@ module.exports = {
     });
     insertGallery.push({
       // 243
-      binit_id: 3,
+      binit_id: 4,
       user_id: 1,
       title: '하단배너',
       writer: '최고관리자',
@@ -61,7 +61,7 @@ module.exports = {
     });
     insertGallery.push({
       // 244
-      binit_id: 3,
+      binit_id: 4,
       user_id: 1,
       title: 'Ride List',
       writer: '최고관리자',
@@ -72,7 +72,7 @@ module.exports = {
     });
     insertGallery.push({
       // 245
-      binit_id: 3,
+      binit_id: 4,
       user_id: 1,
       title: 'Insta List',
       writer: '최고관리자',
@@ -80,10 +80,10 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
     });
-    for (let i = 0; i < 11; i++) {
+    for (let i = 0; i < 10; i++) {
       insertGallery.push({
-        // 246 ~ 256
-        binit_id: 4,
+        // 246 ~ 255
+        binit_id: 3,
         user_id: 1,
         title: '관계사' + i,
         writer: '최고관리자',

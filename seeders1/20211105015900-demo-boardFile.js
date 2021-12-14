@@ -2,7 +2,7 @@ const fs = require('fs-extra');
 const path = require('path');
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    const files = fs.readdirSync(path.join(__dirname, '../storages/211205'));
+    const files = fs.readdirSync(path.join(__dirname, '../storages/201205'));
     files.splice(files.indexOf('thumb'), 1);
     const insertFile = [];
     for (let i = 1; i <= 120; i++) {
@@ -61,7 +61,7 @@ module.exports = {
     });
     insertFile.push({
       board_id: 243,
-      oriName: '하단배너.jpg',
+      oriName: '하단배너.png',
       saveName: '201210_243.png',
       mimeType: 'image/jpg',
       fileType: 'I',
@@ -73,7 +73,7 @@ module.exports = {
       insertFile.push({
         board_id: 244,
         oriName: 'ride' + i + '.jpg',
-        saveName: '211207_244-0' + i + '.jpg',
+        saveName: '201210_244-0' + i + '.jpg',
         mimeType: 'image/jpg',
         fileType: 'I',
         size: 12369,

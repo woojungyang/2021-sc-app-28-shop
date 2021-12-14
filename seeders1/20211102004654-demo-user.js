@@ -7,8 +7,8 @@ module.exports = {
     insertUsers.push({
       userid: 'woojungyang',
       userpw: await bcrypt.hash('123456' + salt, Number(round)),
-      username: '우정양',
-      email: 'woojungyang1113@gmail.com',
+      username: '최고관리자',
+      email: 'woodongyang1113@gmail.com',
       tel: '010-9477-8896',
       addrPost: '12345',
       addrRoad: '서울시 마포구 노고산로',
@@ -20,11 +20,11 @@ module.exports = {
       updatedAt: new Date(),
     });
     insertUsers.push({
-      userid: 'DemoUser',
+      userid: 'demoUser',
       userpw: await bcrypt.hash('111111' + salt, Number(round)),
-      username: 'demouser',
-      email: 'demoUser@gmail.com',
-      tel: '010-1234-5678',
+      username: '데모관리자',
+      email: 'demo@demo.com',
+      tel: '010-3333-8888',
       addrPost: '12345',
       addrRoad: '서울시 마포구 노고산로',
       addrJibun: '서울시 마포구 창천동',
@@ -36,9 +36,9 @@ module.exports = {
     });
     for (let i = 0; i < 45; i++) {
       insertUsers.push({
-        userid: 'Test' + i,
+        userid: 'test' + i,
         userpw: await bcrypt.hash('222222' + salt, Number(round)),
-        username: 'testuser' + i,
+        username: '테스트유저' + i,
         email: 'test' + i + '@test.com',
         tel: `010-7777-${numeral(i).format('0000')}`,
         addrPost: String(10000 + i),
